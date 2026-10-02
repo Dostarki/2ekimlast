@@ -1,0 +1,6 @@
+.connection-stats{display:flex;flex-direction:column;gap:5px;margin-top:7px;max-width:260px;font:10px 'JetBrains Mono',monospace;color:#eef4e5;font-variant-numeric:tabular-nums;text-shadow:0 1px 3px #000,0 0 5px #000}
+.connection-values{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.connection-detail{color:#d7e5c9;font-size:9px}
+.connection-stats .connection-warn{color:#ffd08a}
+@media(min-width:768px){.is-playing .interior-notice{top:120px}}
+@media(max-width:767px){.connection-stats{max-width:210px}.connection-values{gap:7px}}

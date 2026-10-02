@@ -1,0 +1,82 @@
+{
+  "project_name": "Last Z Hood - Docs Drop-in Integration",
+  "app_type": "gaming_web_app",
+  "theme": "dark",
+  "design_philosophy": {
+    "core_principle": "Minimal preservation & seamless integration. Maintain existing survival/gaming theme and existing wallet/auth features while introducing the /docs route and Docs buttons smoothly.",
+    "anti_patterns": [
+      "No radical layout overhauls or changing existing HUD/StartScreen styles.",
+      "Do not replace App.js/StartScreen.jsx completely from stale ZIP copies.",
+      "Do not obscure essential navigation or wallet controls."
+    ]
+  },
+  "typography": {
+    "heading_font": "Barlow Condensed, Rajdhani, Orbitron, sans-serif",
+    "body_font": "Inter, Roboto, sans-serif",
+    "code_font": "JetBrains Mono, Source Code Pro, monospace",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-wide",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight text-amber-400",
+      "h3": "text-xl sm:text-2xl font-semibold text-slate-200",
+      "body": "text-base text-slate-300 leading-relaxed",
+      "small_label": "text-xs font-mono uppercase tracking-widest text-slate-400"
+    }
+  },
+  "colors": {
+    "background": "#0b0f19",
+    "surface": "#111827",
+    "surface_border": "#1f2937",
+    "primary": "#f59e0b",
+    "primary_hover": "#d97706",
+    "accent": "#ef4444",
+    "text_primary": "#f3f4f6",
+    "text_secondary": "#9ca3af",
+    "text_muted": "#6b7280"
+  },
+  "layout_and_navigation": {
+    "docs_route": "/docs",
+    "header_navigation": {
+      "desktop": "Include Docs navigation link next to standard upper nav controls.",
+      "start_screen": "Add a dedicated standard styled button 'Docs' or 'Field Guide' on StartScreen pointing to /docs.",
+      "docs_page": "In DocsPage, preserve left sidebar chapter navigation, top search bar, and main chapter viewport."
+    },
+    "responsive_rules": {
+      "mobile": "Provide mobile-friendly chapter selection dialog/drawer on /docs route.",
+      "max_heights": "Ensure long document scrollable area does not break main viewport."
+    }
+  },
+  "component_guidelines": {
+    "DocsPage": {
+      "path": "frontend/src/components/DocsPage.jsx",
+      "css_path": "frontend/src/components/DocsPage.css",
+      "features": [
+        "11-chapter survival field guide display",
+        "Interactive chapter switching & search input",
+        "Deep linking via chapter queries or URL hashes",
+        "Mobile chapter select dialog"
+      ]
+    },
+    "StartScreen": {
+      "path": "frontend/src/components/StartScreen.jsx",
+      "css_path": "frontend/src/components/StartScreen.css",
+      "guidelines": "Add Docs entry button while maintaining current background, wallet login, and game entry workflow."
+    }
+  },
+  "testing_attributes": {
+    "data_testids": {
+      "docs_nav_link": "nav-docs-link",
+      "start_docs_button": "start-docs-button",
+      "docs_search_input": "docs-search-input",
+      "docs_chapter_item": "docs-chapter-item",
+      "docs_content_container": "docs-content-container",
+      "docs_mobile_menu_trigger": "docs-mobile-menu-trigger"
+    }
+  },
+  "instructions_to_main_agent": [
+    "The user's uploaded DocsPage.css is authoritative for visual design: keep its Barlow/Barlow Condensed/JetBrains Mono fonts and olive/ink/coral palette, not the generic typography/color suggestions above. Preserve the uploaded English content.",
+    "Ensure DocsPage.jsx and DocsPage.css are cleanly placed in frontend/src/components/",
+    "Add route /docs in App.js without breaking wallet authorization or existing routes",
+    "Add Docs links on upper nav bar and StartScreen landing area",
+    "Preserve existing StartScreen wallet logic and main game layout"
+  ]
+}

@@ -1,0 +1,1 @@
+export const createNetworkWorker = () => new Worker(new URL('./network.worker.js', import.meta.url));

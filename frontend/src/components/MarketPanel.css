@@ -1,0 +1,357 @@
+.market-dialog {
+  width: calc(100% - 32px) !important;
+  max-width: 860px !important;
+  max-height: 88dvh;
+  overflow-y: auto;
+  background: #131d16 !important;
+  border: 1px solid rgba(130, 153, 110, 0.4) !important;
+  border-radius: 4px !important;
+  padding: 24px !important;
+  color: #e4ebd9;
+  scrollbar-width: thin;
+  scrollbar-color: #2e4133 #101612;
+}
+
+.market-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(143, 168, 116, 0.25);
+  padding-bottom: 12px;
+}
+.market-heading-title span {
+  font: 9px 'JetBrains Mono', monospace;
+  color: #96ab86;
+  display: block;
+}
+.market-heading-title h2 {
+  font: 600 32px 'Barlow Condensed', sans-serif !important;
+  color: #edf4df;
+  margin: 0;
+}
+.market-gold-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1c2b20;
+  border: 1px solid rgba(200, 214, 160, 0.4);
+  padding: 6px 14px;
+  border-radius: 3px;
+}
+.market-gold-badge span {
+  font: 8px 'JetBrains Mono', monospace;
+  color: #a2b798;
+}
+.market-gold-badge strong {
+  font: 600 18px 'Barlow Condensed', sans-serif;
+  color: #ffd166;
+}
+
+.market-tabs-bar {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 16px;
+  border-bottom: 1px solid rgba(143, 168, 116, 0.2);
+  padding-bottom: 10px;
+}
+.market-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #17241b;
+  border: 1px solid rgba(143, 168, 116, 0.3);
+  color: #9cb194;
+  padding: 8px 16px;
+  font: 600 13px 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.market-tab-btn:hover {
+  background: #223528;
+  color: #edf4df;
+  border-color: #b5c79a;
+}
+.market-tab-btn.active {
+  background: #2b4231;
+  color: #e4ebd9;
+  border-color: #c8d6a0;
+  box-shadow: inset 0 0 0 1px #c8d6a0;
+}
+
+/* Soldiers Grid */
+.soldiers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.soldier-card {
+  background: #16221a;
+  border: 1px solid rgba(143, 168, 116, 0.3);
+  border-radius: 3px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  transition: all 0.15s;
+}
+.soldier-card.active-soldier {
+  border-color: #50e3c2;
+  background: #1a2f26;
+  box-shadow: 0 0 10px rgba(80, 227, 194, 0.2);
+}
+.soldier-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.soldier-role-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.soldier-tier-badge {
+  font: 700 11px 'JetBrains Mono', monospace;
+  background: #24382a;
+  color: #c8d6a0;
+  border: 1px solid rgba(200, 214, 160, 0.4);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+.soldier-role-wrap strong {
+  font: 600 17px 'Barlow Condensed', sans-serif;
+  color: #edf4df;
+  display: block;
+}
+.soldier-role-wrap strong small{font:500 9px 'JetBrains Mono',monospace;color:#84977b}
+.soldier-rename-button{margin-left:7px;padding:1px 2px;color:#c8d6a0;background:transparent;border:0;vertical-align:middle;cursor:pointer}
+.soldier-rename-button:hover{color:#fff}
+.soldier-nickname-editor{display:flex;align-items:center;gap:3px}.soldier-nickname-editor input{width:126px;min-width:0;padding:3px 5px;background:#0f1711;border:1px solid #8fa874;color:#edf4df;font:600 14px 'Barlow Condensed',sans-serif}.soldier-nickname-editor button{display:grid;place-items:center;padding:3px;background:#213627;border:1px solid #607c59;color:#c8d6a0;cursor:pointer}.soldier-nickname-editor button:last-child{color:#ee9a8c;border-color:#7c4d45}.soldier-nickname-error{display:block;max-width:170px;font:8px 'JetBrains Mono',monospace;color:#eb8b78;margin-top:3px}
+.soldier-role {
+  font: 8px 'JetBrains Mono', monospace;
+  color: #8da285;
+  display: block;
+}
+.soldier-status {
+  font: 700 9px 'JetBrains Mono', monospace;
+  padding: 3px 7px;
+  border-radius: 2px;
+}
+.soldier-status.active {
+  background: #194d3e;
+  color: #50e3c2;
+  border: 1px solid #50e3c2;
+}
+.soldier-status.owned {
+  background: #233628;
+  color: #a4bba0;
+  border: 1px solid #789174;
+}
+.soldier-price {
+  font: 700 13px 'Barlow Condensed', sans-serif;
+  color: #ffd166;
+}
+.soldier-desc {
+  font: 9px 'JetBrains Mono', monospace;
+  color: #95ab8e;
+  line-height: 1.4;
+  margin: 0;
+}
+.soldier-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  background: #101913;
+  padding: 8px 10px;
+  border: 1px solid rgba(143, 168, 116, 0.2);
+}
+.s-stat span {
+  display: block;
+  font: 7px 'JetBrains Mono', monospace;
+  color: #7d9376;
+}
+.s-stat strong {
+  display: block;
+  font: 600 14px 'Barlow Condensed', sans-serif;
+  color: #dce7d1;
+}
+.soldier-action-btn {
+  width: 100%;
+  padding: 8px 12px;
+  font: 600 13px 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.soldier-action-btn.buy {
+  background: #253d2d;
+  color: #d8e6cb;
+  border-color: #8fa874;
+}
+.soldier-action-btn.buy:hover:not(:disabled) {
+  background: #33553e;
+  border-color: #c8d6a0;
+  color: #fff;
+}
+.soldier-action-btn.activate {
+  background: #1b3d32;
+  color: #50e3c2;
+  border-color: #3aa68b;
+}
+.soldier-action-btn.activate:hover:not(:disabled) {
+  background: #245546;
+  border-color: #50e3c2;
+  color: #fff;
+}
+.soldier-action-btn.dismiss {
+  background: #3d1f1f;
+  color: #f7a5a5;
+  border-color: #ba5454;
+}
+.soldier-action-btn.dismiss:hover:not(:disabled) {
+  background: #572929;
+  color: #fff;
+}
+.soldier-action-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Sell Tab */
+.sell-categories-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.sell-cat-btn {
+  background: #17241b;
+  border: 1px solid rgba(143, 168, 116, 0.25);
+  color: #9cb194;
+  padding: 5px 12px;
+  font: 600 11px 'Barlow Condensed', sans-serif;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.sell-cat-btn:hover {
+  background: #213327;
+  color: #e4ebd9;
+}
+.sell-cat-btn.active {
+  background: #293f2f;
+  color: #dce7d1;
+  border-color: #c8d6a0;
+}
+.sell-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.sell-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #152219;
+  border: 1px solid rgba(143, 168, 116, 0.25);
+  border-radius: 3px;
+}
+.sell-item-card.empty {
+  opacity: 0.4;
+}
+.sell-item-info strong {
+  display: block;
+  font: 600 15px 'Barlow Condensed', sans-serif;
+  color: #e4ebd9;
+}
+.sell-item-info small {
+  display: block;
+  font: 8px 'JetBrains Mono', monospace;
+  color: #8fa387;
+  margin-top: 2px;
+}
+.sell-item-actions {
+  display: flex;
+  gap: 6px;
+}
+.sell-btn {
+  background: #243528;
+  border: 1px solid #758f60;
+  color: #c8d6a0;
+  padding: 5px 9px;
+  font: 600 11px 'Barlow Condensed', sans-serif;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sell-btn:hover:not(:disabled) {
+  background: #334e3a;
+  border-color: #c8d6a0;
+  color: #fff;
+}
+.sell-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Packages Tab */
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.package-card {
+  background: #17241b;
+  border: 1px solid rgba(143, 168, 116, 0.35);
+  border-radius: 3px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pack-badge {
+  display: inline-block;
+  font: 700 8px 'JetBrains Mono', monospace;
+  background: #1a3c30;
+  color: #50e3c2;
+  border: 1px solid #50e3c2;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+.package-title strong {
+  display: block;
+  font: 600 20px 'Barlow Condensed', sans-serif;
+  color: #edf4df;
+}
+.package-card p {
+  font: 9px 'JetBrains Mono', monospace;
+  color: #9cb195;
+  line-height: 1.4;
+  margin: 0;
+}
+.package-loot-list {
+  background: #101913;
+  padding: 10px;
+  border: 1px solid rgba(143, 168, 116, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.package-loot-list span {
+  font: 9px 'JetBrains Mono', monospace;
+  color: #c8d6a0;
+}
+.pack-buy-btn {
+  margin-top: auto;
+  padding: 8px 12px;
+  background: #1d2b20;
+  border: 1px solid #5d754b;
+  color: #98ad89;
+  font: 600 12px 'Barlow Condensed', sans-serif;
+  border-radius: 2px;
+  cursor: not-allowed;
+}

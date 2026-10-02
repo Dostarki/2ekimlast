@@ -1,0 +1,2 @@
+# Extra dependency for backend/local_run.py; install alongside the project's backend requirements.
+mongomock-motor==0.0.36

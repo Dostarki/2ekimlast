@@ -1,0 +1,1 @@
+"""Isolated Early registry backed exclusively by MONGO_URL2 / DB_NAME2."""

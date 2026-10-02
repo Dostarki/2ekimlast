@@ -1,0 +1,311 @@
+.wallet-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  position: relative;
+  z-index: 50;
+}
+
+.wallet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #111a13;
+  background: #c8d6a0;
+  border: 1px solid rgba(200, 214, 160, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.wallet-btn:hover {
+  background: #d9e6b5;
+  box-shadow: 0 0 16px rgba(200, 214, 160, 0.45);
+  transform: translateY(-1px);
+}
+
+.wallet-btn.connect-btn {
+  background: #c8d6a0;
+  color: #0f1712;
+}
+
+.wallet-btn.wrong-net-btn {
+  background: #c4402a;
+  color: #fff;
+  border-color: #ff6b52;
+}
+
+.wallet-siwe-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 6px;
+}
+
+.wallet-btn.siwe-btn {
+  background: #c4402a;
+  color: #fff;
+  border-color: #ff6b52;
+}
+.wallet-btn.siwe-btn:hover {
+  background: #d64d36;
+}
+
+.wallet-btn-mini {
+  padding: 8px 10px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: #c8d6a0;
+  background: rgba(18, 28, 22, 0.85);
+  border: 1px solid rgba(200, 214, 160, 0.25);
+  cursor: pointer;
+}
+
+.wallet-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 12px;
+  background: rgba(16, 26, 20, 0.85);
+  border: 1px solid rgba(200, 214, 160, 0.28);
+  backdrop-filter: blur(8px);
+}
+
+.wallet-badge-info {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.wallet-badge-status .status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #50e3c2;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #50e3c2;
+}
+
+.wallet-badge-nick {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2ede5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.wallet-badge-addr {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(200, 214, 160, 0.7);
+}
+
+.wallet-logout-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.wallet-logout-btn:hover {
+  color: #ff6b52;
+}
+
+.wallet-error-msg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: #ff7660;
+  background: rgba(40, 15, 15, 0.9);
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 100, 80, 0.3);
+  max-width: min(360px, 100%);
+  overflow-wrap: anywhere;
+}
+
+.wallet-btn:disabled { opacity: .7; cursor: wait; transform: none; }
+.wallet-payment-link { color: #c8d6a0; font-size: 11px; text-decoration: underline; }
+.wallet-recovery-input { width: min(320px, 100%); min-width: 0; padding: 8px; background: #121c16; color: #e5ece6; border: 1px solid #647b68; font-size: 12px; }
+
+/* Call Sign Modal */
+.wallet-nick-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 7, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-nick-modal {
+  background: #121c16;
+  border: 1px solid #c8d6a0;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  color: #e5ece6;
+  text-align: left;
+}
+
+.wallet-nick-modal h3 {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #c8d6a0;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wallet-nick-modal p {
+  font-size: 13px;
+  color: #9cb0a2;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.wallet-nick-modal input {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(8, 14, 10, 0.8);
+  border: 1px solid rgba(200, 214, 160, 0.3);
+  margin-bottom: 20px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.wallet-nick-modal input:focus {
+  border-color: #c8d6a0;
+  box-shadow: 0 0 10px rgba(200, 214, 160, 0.3);
+}
+
+.wallet-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.wallet-modal-actions .save-btn {
+  background: #c8d6a0;
+  color: #111a13;
+  font-weight: 700;
+}
+
+/* Lobby Market Banner (Dark Tactical Styling) */
+.lobby-market-banner{margin-top:8px;padding:0;background:none;border:0;box-shadow:none;min-height:44px}
+.lobby-market-banner:hover{border:0;box-shadow:none}
+.market-banner-left{display:none}
+.market-banner-btn{min-height:44px;justify-content:center;flex:1;background:rgba(200,214,160,.08);border-color:rgba(200,214,160,.24)}
+.lobby-market-banner {
+  margin-top: 14px;
+  background: linear-gradient(135deg, rgba(22, 32, 25, 0.95), rgba(14, 20, 16, 0.95));
+  border: 1px solid rgba(200, 214, 160, 0.22);
+  border-left: 3px solid #c8d6a0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.lobby-market-banner:hover {
+  border-color: rgba(200, 214, 160, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(200, 214, 160, 0.08);
+}
+
+.market-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.market-banner-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #a2a797;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.market-pulse-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c8d6a0;
+  box-shadow: 0 0 8px #c8d6a0;
+  display: inline-block;
+}
+
+.market-banner-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #e5e9dd;
+}
+
+.market-banner-btn {
+  background: rgba(200, 214, 160, 0.12);
+  border: 1px solid rgba(200, 214, 160, 0.35);
+  color: #c8d6a0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 7px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.market-banner-btn:hover {
+  background: #c8d6a0;
+  color: #0e1210;
+  border-color: #c8d6a0;
+  box-shadow: 0 0 12px rgba(200, 214, 160, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Keep market access secondary to character preparation. */
+.lobby-market-banner{margin-top:8px;padding:0;background:none;border:0;box-shadow:none;min-height:44px}
+.lobby-market-banner:hover{border:0;box-shadow:none}
+.market-banner-left{display:none}
+.market-banner-btn{min-height:44px;justify-content:center;flex:1;background:rgba(200,214,160,.08);border-color:rgba(200,214,160,.24)}
+

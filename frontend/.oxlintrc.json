@@ -1,0 +1,7 @@
+{
+  "ignorePatterns": [
+    "public/local-runtime/**",
+    "**/*.asm.js",
+    "node_modules/**"
+  ]
+}

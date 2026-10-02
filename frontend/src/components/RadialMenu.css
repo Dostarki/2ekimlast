@@ -1,0 +1,635 @@
+/* Radial Command Wheel - GTA V Style Module Wheel for DEADZONE */
+.radial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  user-select: none;
+  animation: radialFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes radialFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.radial-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(14, 22, 17, 0.78) 0%, rgba(8, 12, 9, 0.94) 80%);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+/* Close button in top-right */
+.radial-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  z-index: 10;
+  background: #141f17;
+  border: 1px solid #2e4333;
+  color: #9ab09c;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.radial-close-btn:hover {
+  background: #d95845;
+  border-color: #f07d6c;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.radial-container {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Tactical Background Grid & Radar Rings */
+.radial-radar-rings {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px dashed rgba(160, 185, 155, 0.18);
+  pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+.radial-radar-rings::before {
+  content: '';
+  position: absolute;
+  inset: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(160, 185, 155, 0.12);
+}
+
+.radial-radar-rings::after {
+  content: '';
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  border: 1px solid rgba(160, 185, 155, 0.25);
+}
+
+/* Axis Separator Lines */
+.radial-axis-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(160, 185, 155, 0.25) 20%, rgba(160, 185, 155, 0.25) 80%, transparent);
+  pointer-events: none;
+  transform: translateY(-0.5px);
+}
+
+.radial-axis-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(160, 185, 155, 0.25) 20%, rgba(160, 185, 155, 0.25) 80%, transparent);
+  pointer-events: none;
+  transform: translateX(-0.5px);
+}
+
+/* 45-degree diagonal divider lines to emphasize 4 quadrants */
+.radial-quadrant-dividers {
+  position: absolute;
+  inset: 50px;
+  pointer-events: none;
+}
+
+.radial-quadrant-dividers::before,
+.radial-quadrant-dividers::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+/* Needle / Compass Indicator */
+.radial-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 220px;
+  margin-left: -1px;
+  margin-top: -110px;
+  pointer-events: none;
+  transform-origin: center center;
+  transition: opacity 0.2s ease;
+  z-index: 3;
+}
+
+.needle-head {
+  position: absolute;
+  top: -10px;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 12px solid #c8d6a0;
+  filter: drop-shadow(0 0 10px #c8d6a0);
+  transition: border-bottom-color 0.15s ease, filter 0.15s ease;
+}
+
+/* Quadrants Container */
+.radial-quadrants {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+/* Base Wedge Style */
+.radial-wedge {
+  position: absolute;
+  background: #141f17;
+  border: 1px solid #2a3d2e;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Wedge Badge Header (e.g. ▲ TOP) */
+.wedge-badge {
+  position: absolute;
+  top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 700 8.5px/1 'JetBrains Mono', monospace;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.wedge-badge .arrow-icon {
+  font-size: 9px;
+}
+
+/* Content inside wedge */
+.wedge-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 14px;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.wedge-content strong {
+  font: 700 15px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wedge-content small {
+  font: 500 8px/1 'JetBrains Mono', monospace;
+  color: #7b8e78;
+  letter-spacing: 0.06em;
+}
+
+.wedge-icon {
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+/* Wedge Glow element */
+.wedge-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* ---------------------------------------------------- */
+/* TOP QUADRANT: INVENTORY (Tactical Olive & Lime)      */
+/* ---------------------------------------------------- */
+.wedge-up {
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 110px;
+  border-radius: 8px 8px 4px 4px;
+  border-color: #38513b;
+  background: linear-gradient(180deg, #18281d 0%, #121d15 100%);
+}
+
+.wedge-up .top-badge {
+  background: rgba(200, 214, 160, 0.12);
+  border-color: rgba(200, 214, 160, 0.3);
+  color: #c8d6a0;
+}
+
+.wedge-up .wedge-icon {
+  color: #b5c79a;
+}
+
+.wedge-up .wedge-content strong {
+  color: #d6e2c4;
+}
+
+.wedge-up:hover,
+.wedge-up.active {
+  background: linear-gradient(180deg, #223728 0%, #16261b 100%);
+  border-color: #c8d6a0;
+  transform: translateX(-50%) translateY(-6px) scale(1.05);
+  box-shadow: 0 0 30px rgba(200, 214, 160, 0.35), inset 0 0 16px rgba(200, 214, 160, 0.12);
+}
+
+.wedge-up.active .top-badge {
+  background: #c8d6a0;
+  color: #111a13;
+  font-weight: 800;
+}
+
+.wedge-up.active .wedge-icon {
+  color: #c8d6a0;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(200, 214, 160, 0.7));
+}
+
+.wedge-up.active .wedge-content strong {
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------- */
+/* BOTTOM QUADRANT: CRAFTING (Workshop Amber Orange)    */
+/* ---------------------------------------------------- */
+.wedge-down {
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 110px;
+  border-radius: 4px 4px 8px 8px;
+  border-color: #543922;
+  background: linear-gradient(0deg, #281c12 0%, #171512 100%);
+}
+
+.wedge-down .bottom-badge {
+  background: rgba(240, 152, 56, 0.12);
+  border-color: rgba(240, 152, 56, 0.35);
+  color: #f09838;
+}
+
+.wedge-down .wedge-icon {
+  color: #e09855;
+}
+
+.wedge-down .wedge-content strong {
+  color: #ebd0b5;
+}
+
+.wedge-down:hover,
+.wedge-down.active {
+  background: linear-gradient(0deg, #382414 0%, #201a14 100%);
+  border-color: #f09838;
+  transform: translateX(-50%) translateY(6px) scale(1.05);
+  box-shadow: 0 0 30px rgba(240, 152, 56, 0.4), inset 0 0 16px rgba(240, 152, 56, 0.12);
+}
+
+.wedge-down.active .bottom-badge {
+  background: #f09838;
+  color: #17120c;
+  font-weight: 800;
+}
+
+.wedge-down.active .wedge-icon {
+  color: #f09838;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(240, 152, 56, 0.7));
+}
+
+.wedge-down.active .wedge-content strong {
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------- */
+/* LEFT QUADRANT: ZONE MAP (Radar Cyan)                 */
+/* ---------------------------------------------------- */
+.wedge-left {
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 135px;
+  height: 125px;
+  border-radius: 8px 4px 4px 8px;
+  border-color: #234449;
+  background: linear-gradient(90deg, #132427 0%, #121b19 100%);
+}
+
+.wedge-left .left-badge {
+  background: rgba(98, 190, 210, 0.12);
+  border-color: rgba(98, 190, 210, 0.3);
+  color: #62bed2;
+}
+
+.wedge-left .wedge-icon {
+  color: #72c3d4;
+}
+
+.wedge-left .wedge-content strong {
+  color: #c9e9ee;
+}
+
+.wedge-left:hover,
+.wedge-left.active {
+  background: linear-gradient(90deg, #1a3337 0%, #152220 100%);
+  border-color: #62bed2;
+  transform: translateY(-50%) translateX(-6px) scale(1.05);
+  box-shadow: 0 0 30px rgba(98, 190, 210, 0.35), inset 0 0 16px rgba(98, 190, 210, 0.12);
+}
+
+.wedge-left.active .left-badge {
+  background: #62bed2;
+  color: #0b1a1c;
+  font-weight: 800;
+}
+
+.wedge-left.active .wedge-icon {
+  color: #62bed2;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(98, 190, 210, 0.7));
+}
+
+.wedge-left.active .wedge-content strong {
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------- */
+/* RIGHT QUADRANT: STATS (Attributes Gold)              */
+/* ---------------------------------------------------- */
+.wedge-right {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 135px;
+  height: 125px;
+  border-radius: 4px 8px 8px 4px;
+  border-color: #4f4724;
+  background: linear-gradient(270deg, #272212 0%, #1a1b15 100%);
+}
+
+.wedge-right .right-badge {
+  background: rgba(229, 193, 88, 0.12);
+  border-color: rgba(229, 193, 88, 0.3);
+  color: #e5c158;
+}
+
+.wedge-right .wedge-icon {
+  color: #d6b85e;
+}
+
+.wedge-right .wedge-content strong {
+  color: #eee1be;
+}
+
+.wedge-right:hover,
+.wedge-right.active {
+  background: linear-gradient(270deg, #373016 0%, #222218 100%);
+  border-color: #e5c158;
+  transform: translateY(-50%) translateX(6px) scale(1.05);
+  box-shadow: 0 0 30px rgba(229, 193, 88, 0.35), inset 0 0 16px rgba(229, 193, 88, 0.12);
+}
+
+.wedge-right.active .right-badge {
+  background: #e5c158;
+  color: #1c1809;
+  font-weight: 800;
+}
+
+.wedge-right.active .wedge-icon {
+  color: #e5c158;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(229, 193, 88, 0.7));
+}
+
+.wedge-right.active .wedge-content strong {
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------- */
+/* CENTER INTERACTIVE HUB                               */
+/* ---------------------------------------------------- */
+.radial-center-hub {
+  position: relative;
+  width: 176px;
+  height: 176px;
+  border-radius: 50%;
+  background: #111a14;
+  border: 2px solid #2e4333;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+  z-index: 6;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.radial-center-hub:hover {
+  transform: scale(1.04);
+}
+
+/* 4 directional indicators around the hub rim */
+.hub-compass-arrows {
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+}
+
+.compass-dir {
+  position: absolute;
+  font-size: 8px;
+  color: #445947;
+  transition: all 0.15s ease;
+}
+
+.compass-dir.c-top {
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-dir.c-right {
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.compass-dir.c-bottom {
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-dir.c-left {
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.compass-dir.active {
+  color: #c8d6a0;
+  font-size: 10px;
+  filter: drop-shadow(0 0 6px currentColor);
+  font-weight: 900;
+}
+
+.compass-dir.c-top.active {
+  color: #c8d6a0;
+}
+
+.compass-dir.c-bottom.active {
+  color: #f09838;
+}
+
+.compass-dir.c-left.active {
+  color: #62bed2;
+}
+
+.compass-dir.c-right.active {
+  color: #e5c158;
+}
+
+.hub-reticle {
+  margin-top: 4px;
+}
+
+.hub-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.hub-direction {
+  font: 700 8px/1 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hub-title {
+  display: block;
+  font: 700 17px/1.1 'Barlow Condensed', sans-serif;
+  color: #f5f8f3;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.hub-sub {
+  display: block;
+  font: 500 7px/1 'JetBrains Mono', monospace;
+  color: #8c9e88;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.hub-action-btn {
+  margin-top: 6px;
+  font: 700 8.5px/1 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+  transition: all 0.15s ease;
+}
+
+.radial-center-hub:hover .hub-action-btn {
+  background: currentColor;
+  color: #111a14 !important;
+  font-weight: 900;
+}
+
+/* Bottom Helper Footer */
+.radial-footer-hint {
+  position: absolute;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 600 11px/1 'JetBrains Mono', monospace;
+  color: #92a48f;
+  letter-spacing: 0.08em;
+  background: rgba(18, 27, 20, 0.85);
+  border: 1px solid #283a2b;
+  padding: 8px 18px;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.radial-footer-hint .hint-sep {
+  color: #3b503f;
+}
+
+.radial-footer-hint kbd {
+  background: #253828;
+  color: #c8d6a0;
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid #3d5642;
+  font-weight: 700;
+}
+
+.radial-quick-market-btn {
+  background: #1b2d22;
+  border: 1px solid #50e3c2;
+  color: #50e3c2;
+  font: 700 11px 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.radial-quick-market-btn:hover {
+  background: #244635;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(80, 227, 194, 0.4);
+}

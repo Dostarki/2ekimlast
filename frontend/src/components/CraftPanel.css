@@ -1,0 +1,652 @@
+.craft-dialog {
+  width: min(96vw, 1060px) !important;
+  max-width: 1060px !important;
+  max-height: 88vh;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #141d17 !important;
+  border: 1px solid #28372b !important;
+  color: #e5ece5;
+  padding: 24px !important;
+  scrollbar-width: thin;
+  scrollbar-color: #2e4133 #101612;
+}
+
+/* Selected-blueprint workspace: catalog stays scannable while one recipe owns detail. */
+.workshop-hero{display:grid;grid-template-columns:minmax(250px,.95fr) minmax(0,1.3fr);margin:0 0 14px;border:1px solid #516443;background:linear-gradient(118deg,#101811,#1b2a1d 64%,#20281e);box-shadow:inset 0 0 0 1px #b7cc8330}
+.workshop-hero-art{position:relative;min-height:208px;display:grid;place-items:center;overflow:hidden;background:repeating-linear-gradient(0deg,#a4c18508 0 1px,transparent 1px 25px),linear-gradient(145deg,#0b100d,#1f3422)}
+.workshop-hero-art:before{content:'';position:absolute;width:280px;height:280px;border:1px solid #c8d6a033;border-radius:50%;box-shadow:0 0 0 28px #c8d6a00c,0 0 0 56px #c8d6a006}.workshop-hero-art img{position:relative;width:105%;max-height:195px;object-fit:contain;filter:drop-shadow(0 18px 14px #050905)}.workshop-hero-art span{position:absolute;left:10px;bottom:9px;color:#c8d6a0;font:700 9px 'JetBrains Mono',monospace;letter-spacing:.12em}
+.workshop-hero-detail{padding:20px;min-width:0}.workshop-kicker{font:700 9px 'JetBrains Mono',monospace;color:#b8cc82;letter-spacing:.14em}.workshop-hero h3{margin:5px 0 6px;color:#f1f5e7;font:700 31px/1 'Barlow Condensed',sans-serif}.workshop-hero p{margin:0;color:#aebba9;font:400 13px/1.35 Barlow,sans-serif}.workshop-statline{display:flex;gap:16px;margin:14px 0 10px;color:#dde6c7;font:700 11px 'JetBrains Mono',monospace}.workshop-statline b{white-space:nowrap}.workshop-materials{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}.workshop-materials span{padding:4px 6px;border:1px solid #5b6e52;color:#c9d8bd;font:8px 'JetBrains Mono',monospace}.workshop-materials .missing{border-color:#7b4539;color:#e7a092}.workshop-hero-cta{width:100%;padding:11px;border:1px solid #d65f4b;background:#b94639;color:#fff6ea;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.08em;display:flex;justify-content:center;gap:8px;cursor:pointer}.workshop-hero-cta:disabled{opacity:.48;cursor:not-allowed}
+.material-requirement{display:grid;grid-template-columns:31px minmax(84px,1fr);grid-template-rows:auto 3px;column-gap:5px;min-width:132px;padding:4px;border:1px solid #5b6e52;background:#0d140f}.material-requirement .material-thumbnail{grid-row:1/3;width:29px;height:29px;fill:#35452f;stroke:#b9ca9a;stroke-width:4;stroke-linejoin:round}.material-requirement.tier-2 .material-thumbnail{stroke:#c8be7a;fill:#5b572f}.material-requirement.tier-3 .material-thumbnail{stroke:#e0a866;fill:#65452d}.material-requirement span{display:flex;justify-content:space-between;gap:6px;padding:0;border:0;font-size:8px;white-space:nowrap}.material-requirement i{height:3px;background:#263428;overflow:hidden}.material-requirement i i{display:block;height:100%;background:#b9ce87}.material-requirement.missing i i{background:#d95845}.material-thumbnail text{fill:#edf3d8;stroke:none;font:700 11px 'JetBrains Mono',monospace}.equipment-thumbnail{width:72px;height:72px;flex:0 0 auto;fill:rgba(53,67,44,.5);stroke:#aab991;stroke-width:4;stroke-linejoin:round}.equipment-thumbnail.compact{width:38px;height:38px}.equipment-thumbnail text{fill:#dbe8bf;stroke:none;font:700 13px 'JetBrains Mono',monospace}.equipment-thumbnail.tier-2{stroke:#b9bb78;fill:rgba(94,101,48,.5)}.equipment-thumbnail.tier-3{stroke:#e0c778;fill:rgba(119,90,44,.5)}
+.craft-recipes-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.recipe-card.catalogue-card{min-height:84px;padding:10px;background:#121b14;border:1px solid #354737;cursor:pointer}.recipe-card.catalogue-card.selected{border-color:#c8d6a0;background:#21301f;box-shadow:inset 3px 0 #c8d6a0}.catalogue-card .recipe-title-wrap strong{font-size:15px}.catalogue-status{margin-top:9px;color:#9cab90;font:8px 'JetBrains Mono',monospace;letter-spacing:.06em}.catalogue-card.ready .catalogue-status{color:#c8d6a0}.catalogue-card.crafted .catalogue-status{color:#91b8aa}
+@media (max-width:680px){.craft-dialog{padding:15px!important;width:100vw!important;max-height:100vh;border-width:0}.workshop-hero{grid-template-columns:1fr}.workshop-hero-art{min-height:145px}.workshop-hero-art img{max-height:135px}.craft-recipes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workshop-hero h3{font-size:26px}}
+
+/* DEADZONE Tactical Dark Theme Scrollbar */
+.craft-dialog::-webkit-scrollbar {
+  width: 7px;
+}
+
+.craft-dialog::-webkit-scrollbar-track {
+  background: #101612;
+  border-left: 1px solid #1c271e;
+  border-radius: 0 4px 4px 0;
+}
+
+.craft-dialog::-webkit-scrollbar-thumb {
+  background: #2e4133;
+  border: 1px solid #3d5644;
+  border-radius: 3px;
+  transition: background-color 0.18s, border-color 0.18s;
+}
+
+.craft-dialog::-webkit-scrollbar-thumb:hover {
+  background: #486550;
+  border-color: #c8d6a0;
+  box-shadow: 0 0 6px rgba(200, 214, 160, 0.35);
+}
+
+.craft-dialog::-webkit-scrollbar-thumb:active {
+  background: #c8d6a0;
+  border-color: #ffffff;
+}
+
+.craft-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.craft-heading-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.craft-heading span:first-child {
+  font: 500 9px/1 'JetBrains Mono', monospace;
+  color: #8c9889;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.craft-heading h2 {
+  font: 700 28px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.04em;
+  color: #f1f5f0;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Mode Switch Tabs */
+.craft-mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.craft-mode-tabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #19231c;
+  border: 1px solid #28372b;
+  color: #a4b0a2;
+  font: 700 11px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.06em;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.craft-mode-tabs button:hover {
+  background: #202d24;
+  color: #f1f5f0;
+}
+
+.craft-mode-tabs button.active {
+  background: #2a3c2e;
+  border-color: #c8d6a0;
+  color: #c8d6a0;
+  box-shadow: 0 0 10px rgba(200, 214, 160, 0.15);
+}
+
+.craft-section-label {
+  font: 600 10px/1 'JetBrains Mono', monospace;
+  color: #92a08f;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Tab notice */
+.craft-tab-notice {
+  background: #19231c;
+  border-left: 3px solid #c8d6a0;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font: 400 11px/1.4 'JetBrains Mono', monospace;
+  color: #b5c2b2;
+}
+
+/* Weapon chips - STRICTLY WRAPPED NO HORIZONTAL SCROLL */
+.craft-weapon-selector {
+  margin-bottom: 14px;
+}
+
+.craft-weapon-chips {
+  display: flex;
+  flex-wrap: wrap !important;
+  gap: 6px;
+  overflow-x: hidden !important;
+}
+
+.craft-weapon-chip {
+  background: #19231c;
+  border: 1px solid #28372b;
+  color: #bcc6b9;
+  padding: 6px 10px;
+  font: 600 12px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.craft-weapon-chip:hover:not(:disabled) {
+  background: #202d24;
+  border-color: #3b4d3f;
+  color: #f1f5f0;
+}
+
+.craft-weapon-chip.selected {
+  background: #2a3b2f;
+  border-color: #c8d6a0;
+  color: #c8d6a0;
+}
+
+.craft-weapon-chip.chip-locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: #131a15;
+  border-color: #212922;
+}
+
+.chip-equipped {
+  background: #c8d6a0;
+  color: #121914;
+  font: 700 8px/1 'JetBrains Mono', monospace;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.chip-locked-tag {
+  background: #3b2220;
+  color: #eb705a;
+  font: 700 8px/1 'JetBrains Mono', monospace;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* Weapon Preview Card */
+.craft-weapon-preview-card {
+  background: #18221b;
+  border: 1px solid #28372b;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.preview-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-top strong {
+  font: 700 18px/1 'Barlow Condensed', sans-serif;
+  color: #f1f5f0;
+  letter-spacing: 0.04em;
+}
+
+.preview-top span {
+  font: 500 10px/1 'JetBrains Mono', monospace;
+  color: #8c9889;
+  text-transform: uppercase;
+}
+
+.preview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font: 500 11px/1 'JetBrains Mono', monospace;
+  color: #92a08f;
+}
+
+.preview-stats b {
+  color: #c8d6a0;
+}
+
+.preview-active-mods {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 10px/1 'JetBrains Mono', monospace;
+  color: #f0c040;
+  border-top: 1px solid #233026;
+  padding-top: 6px;
+}
+
+/* Parts inventory summary */
+.craft-parts-summary {
+  background: #161f18;
+  border: 1px solid #243227;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  overflow-x: hidden !important;
+}
+
+.craft-parts-tags {
+  display: flex;
+  flex-wrap: wrap !important;
+  gap: 6px;
+}
+
+.craft-part-badge {
+  background: #1e2a21;
+  border: 1px solid #304033;
+  padding: 4px 8px;
+  font: 500 10px/1 'JetBrains Mono', monospace;
+  color: #c8d2c6;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.craft-part-badge b {
+  color: #c8d6a0;
+}
+
+.craft-no-parts {
+  font: 400 11px/1.4 'JetBrains Mono', monospace;
+  color: #727e70;
+  font-style: italic;
+}
+
+/* Recipe cards list */
+.craft-weapons-list,
+.craft-recipes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-x: hidden !important;
+}
+
+.craft-recipe-card {
+  background: #18221b;
+  border: 1px solid #28372b;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.craft-recipe-card.can-craft {
+  border-color: #3f5544;
+}
+
+.craft-recipe-card.can-craft:hover {
+  border-color: #55725c;
+}
+
+.craft-recipe-card.unlocked {
+  border-color: #2e3e31;
+  opacity: 0.75;
+}
+
+.recipe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recipe-title-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recipe-title-box strong {
+  font: 700 16px/1 'Barlow Condensed', sans-serif;
+  color: #f1f5f0;
+  letter-spacing: 0.03em;
+}
+
+.recipe-tier-tag {
+  font: 700 9px/1 'JetBrains Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.recipe-tier-tag.t1 { background: #2d3830; color: #a4b0a2; }
+.recipe-tier-tag.t2 { background: #4a2820; color: #eb705a; }
+.recipe-tier-tag.t3 { background: #354425; color: #c8d6a0; }
+
+.recipe-bonus-pill {
+  font: 700 11px/1 'JetBrains Mono', monospace;
+  color: #c8d6a0;
+  background: #202d23;
+  border: 1px solid #334637;
+  padding: 3px 8px;
+}
+
+.unlocked-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: 700 10px/1 'JetBrains Mono', monospace;
+  color: #c8d6a0;
+  background: #1e2d21;
+  border: 1px solid #324736;
+  padding: 3px 8px;
+}
+
+.locked-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: 700 10px/1 'JetBrains Mono', monospace;
+  color: #eb705a;
+  background: #2b1816;
+  border: 1px solid #4a2622;
+  padding: 3px 8px;
+}
+
+.recipe-desc {
+  font: 400 11px/1.3 'JetBrains Mono', monospace;
+  color: #92a08f;
+  margin: 0 0 6px 0;
+}
+
+.recipe-weapon-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+  font: 500 10px/1 'JetBrains Mono', monospace;
+  color: #7b8a79;
+}
+
+.recipe-weapon-specs b {
+  color: #d1dcce;
+}
+
+.recipe-reqs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipe-req-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 500 11px/1 'JetBrains Mono', monospace;
+  padding: 4px 8px;
+  background: #141d17;
+  border: 1px solid #233026;
+}
+
+.recipe-req-item.met {
+  color: #b0c2ac;
+}
+
+.recipe-req-item.met b {
+  color: #c8d6a0;
+}
+
+.recipe-req-item.missing {
+  color: #8c6a65;
+  border-color: #3b2220;
+}
+
+.recipe-req-item.missing b {
+  color: #eb705a;
+}
+
+.recipe-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.already-unlocked-msg {
+  font: 600 11px/1 'JetBrains Mono', monospace;
+  color: #829280;
+  font-style: italic;
+}
+
+.craft-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font: 700 12px/1 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.08em;
+  background: #c8d6a0;
+  color: #111812;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.craft-action-btn:hover:not(:disabled) {
+  background: #dbe8b5;
+  transform: translateY(-1px);
+}
+
+.craft-action-btn:disabled {
+  background: #222d25;
+  color: #5d6c5c;
+  cursor: not-allowed;
+}
+
+/* Card main flex */
+.recipe-card-main {
+  display: flex;
+  gap: 14px;
+}
+
+.recipe-weapon-preview-col {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 21, 16, 0.7);
+  border: 1px solid rgba(200, 214, 160, 0.15);
+  padding: 8px 6px;
+  gap: 6px;
+}
+
+.recipe-weapon-img {
+  width: 80px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+.recipe-content-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recipe-weapon-type {
+  font: 500 10px/1 'JetBrains Mono', monospace;
+  color: #8c9889;
+  text-transform: uppercase;
+}
+
+.recipe-reqs-label {
+  font: 700 9px/1 'JetBrains Mono', monospace;
+  color: #8c9889;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.recipe-reqs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Large preview in mods tab */
+.craft-weapon-preview-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #17221a;
+  border: 1px solid #28372b;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.preview-card-left {
+  width: 110px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 16, 12, 0.6);
+  border: 1px solid rgba(200, 214, 160, 0.15);
+}
+
+.preview-weapon-large-img {
+  max-width: 95px;
+  max-height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+}
+
+.preview-card-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Comparison card */
+.recipe-comparison-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 23, 17, 0.85);
+  border: 1px solid rgba(200, 214, 160, 0.25);
+  padding: 4px 10px;
+  font: 600 11px/1 'JetBrains Mono', monospace;
+  margin-bottom: 4px;
+}
+
+.comparison-metric {
+  color: #8c9889;
+}
+
+.comparison-current {
+  color: #cdd8c5;
+}
+
+.comparison-arrow {
+  color: #c8d6a0;
+}
+
+.comparison-next {
+  color: #c8d6a0;
+  font-weight: 700;
+}
+
+.comparison-diff {
+  color: #50e3c2;
+  font-size: 10px;
+}
+
+.level-and-gold-req {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0 10px;
+  padding: 6px 8px;
+  background: #111a13;
+  border: 1px solid #8fa87433;
+  font: 600 11px 'JetBrains Mono', monospace;
+}
+.level-and-gold-req span.met {
+  color: #c8d6a0;
+}
+.level-and-gold-req span.missing {
+  color: #eb705a;
+}
+
+.max-upgrade-badge {
+  text-align: center;
+  padding: 14px 10px;
+  font: 700 13px 'Barlow Condensed', sans-serif;
+  color: #c8d6a0;
+  background: #142318;
+  border: 1px solid #8fa87444;
+  letter-spacing: 1px;
+}
+
+.convert-card .recipe-body {
+  padding: 14px 0;
+}
+.convert-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #101913;
+  padding: 12px;
+  border: 1px solid #8fa87433;
+}
+.convert-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.convert-box span {
+  font: 8px 'JetBrains Mono', monospace;
+  color: #8fa387;
+}
+.convert-box strong {
+  font: 600 14px 'Barlow Condensed', sans-serif;
+  color: #e4ebd9;
+}
+.convert-box small {
+  font: 9px 'JetBrains Mono', monospace;
+  color: #c8d6a0;
+}
+.convert-arrow {
+  color: #8fa874;
+}
+
+/* Compact five-mode tactical switcher and selectable equipment grid. */
+.craft-dialog .craft-heading{margin-bottom:8px}.craft-dialog .craft-mode-tabs{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:8px}.craft-dialog .craft-mode-tabs button{padding:8px 5px;font-size:10px;gap:4px}.equipment-hero .equipment-thumbnail{transform:scale(2.15);filter:drop-shadow(0 15px 10px #050805)}.equipment-catalogue{min-height:92px}.equipment-catalogue .recipe-body,.equipment-catalogue .recipe-footer{display:none}.equipment-catalogue .recipe-header{align-items:flex-start}.equipment-catalogue .equipment-thumbnail{margin-right:5px}.catalogue-card[role=button]:focus-visible{outline:2px solid #d95845;outline-offset:2px}@media(max-width:680px){.craft-dialog .craft-mode-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}.craft-dialog .craft-mode-tabs button{font-size:10px;padding:8px 3px}.craft-dialog .craft-mode-tabs svg{display:none}}.material-glyph{position:relative;z-index:1;width:160px;height:80px;color:#c8d6a0;font:700 24px 'Barlow Condensed',sans-serif}.material-glyph text{fill:#eaf0d7;font:700 22px 'JetBrains Mono',monospace}.craft-weapon-mods-view .recipe-card.catalogue-card .recipe-body,.craft-weapon-mods-view .recipe-card.catalogue-card .recipe-footer{display:none}.craft-weapon-mods-view .recipe-card.catalogue-card{min-height:68px}.craft-weapon-mods-view .recipe-header{gap:7px}.craft-target-selector .weapon-chip{padding:7px 10px;border:1px solid #526944;background:#142017;color:#bfd0aa;font:600 11px 'Barlow Condensed',sans-serif}.craft-target-selector .weapon-chip.active{border-color:#c8d6a0;background:#314329;color:#eff5dd}.catalogue-weapon-preview{width:54px;height:26px;object-fit:contain;filter:drop-shadow(0 3px 2px #0008);flex:0 0 auto}.recipe-title-wrap{display:flex;align-items:center;gap:6px;min-width:0}.recipe-title-wrap strong{margin-left:0}
+.material-thumbnail text{display:none}.equipment-thumbnail text{font-size:22px}.recipe-tier-badge{white-space:nowrap;flex:0 0 auto}
+@media(max-width:480px){.craft-recipes-grid{grid-template-columns:1fr}.recipe-card.catalogue-card{min-height:70px}.catalogue-card .recipe-header{display:grid;grid-template-columns:48px minmax(0,1fr);gap:6px;align-items:center}.catalogue-card .catalogue-weapon-preview{grid-row:1/3;width:48px}.catalogue-card .recipe-title-wrap{flex-wrap:wrap;gap:3px}.catalogue-card .recipe-title-wrap strong{width:100%;overflow-wrap:anywhere;line-height:1.05}.catalogue-card .recipe-status-pill,.catalogue-card .recipe-bonus-pill{position:static;justify-self:start;grid-column:2;font-size:8px}.catalogue-card .catalogue-status{margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+
+

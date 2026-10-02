@@ -1,0 +1,7 @@
+.status-effects{position:absolute;left:30px;bottom:244px;display:flex;flex-wrap:wrap;gap:8px;max-width:calc(100% - 60px)}
+.status-effect{display:flex;align-items:center;gap:8px;padding:9px 11px;border-left:2px solid currentColor;background:#191d18e8;font:10px 'JetBrains Mono',monospace}
+.status-effect b{font-weight:500;font-size:11px;margin-left:4px}
+.status-effect.bleeding{color:#f29583}.status-effect.poison{color:#c7dc81}
+.status-effect.webbed{color:#ed8faa}
+@media(max-width:1100px) and (min-width:768px){.status-effects{bottom:214px}}
+@media(max-width:767px){.status-effects{left:16px;top:225px;bottom:auto;max-width:calc(100% - 32px);gap:6px}.status-effect{font-size:8px;padding:7px 9px}}

@@ -1,0 +1,47 @@
+.stats-dialog { max-width: 560px !important; }
+
+.stats-heading { display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+.stats-heading span:first-child { font: 500 8px/1 'JetBrains Mono', monospace; color: var(--subtle); letter-spacing: .12em; text-transform: uppercase; }
+.stats-heading [data-testid="stats-title"] { font: 600 34px/1.1 'Barlow Condensed', sans-serif; color: var(--text); margin: 0; }
+
+.stats-level-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.stats-level-label { font: 600 16px/1 'Barlow Condensed', sans-serif; color: var(--lime); white-space: nowrap; }
+.stats-xp-bar { flex: 1; height: 6px; background: rgba(194,204,176,.12); border-radius: 3px; overflow: hidden; }
+.stats-xp-bar i { display: block; height: 100%; background: var(--lime); border-radius: 3px; transition: width .25s ease; }
+.stats-xp-text { font: 400 10px/1 'JetBrains Mono', monospace; color: var(--subtle); white-space: nowrap; }
+
+.stats-points-banner {
+  display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+  background: rgba(200,214,160,.08); border: 1px solid rgba(200,214,160,.25);
+  border-radius: 4px; margin-bottom: 14px;
+  font: 500 11px/1 'JetBrains Mono', monospace; color: var(--lime);
+}
+.stats-points-banner strong { font-size: 14px; }
+
+.stats-grid { display: flex; flex-direction: column; gap: 8px; }
+
+.stat-card {
+  background: #1c281f; border: 1px solid rgba(194,204,176,.1); border-radius: 4px;
+  padding: 12px 14px;
+}
+.stat-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.stat-header strong { font: 500 13px/1 'Barlow', sans-serif; color: var(--text); flex: 1; }
+.stat-value { font: 500 12px/1 'JetBrains Mono', monospace; color: var(--subtle); }
+
+.stat-bar { height: 4px; background: rgba(194,204,176,.1); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.stat-bar i { display: block; height: 100%; background: var(--lime); border-radius: 2px; transition: width .2s ease; }
+
+.stat-desc { font: 400 10px/1.3 'JetBrains Mono', monospace; color: var(--subtle); margin: 0 0 8px; }
+
+.stat-allocate {
+  font: 600 11px/1 'Barlow Condensed', sans-serif; letter-spacing: .06em;
+  color: var(--lime); background: rgba(200,214,160,.08);
+  border: 1px solid rgba(200,214,160,.2); border-radius: 3px;
+  padding: 5px 14px; cursor: pointer; transition: all .15s;
+}
+.stat-allocate:hover:not(:disabled) { background: rgba(200,214,160,.18); border-color: rgba(200,214,160,.4); }
+.stat-allocate:disabled { opacity: .3; cursor: default; }
+
+@media (max-width: 767px) {
+  .stats-heading [data-testid="stats-title"] { font-size: 28px; }
+}

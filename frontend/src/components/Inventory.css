@@ -1,0 +1,91 @@
+.inventory-dialog{width:calc(100% - 32px)!important;max-width:850px!important;max-height:88dvh;overflow-y:auto;background:#141d17!important;border:1px solid #82996e66!important;border-radius:4px!important;padding:28px!important;color:#e4ebd9;gap:24px!important;scrollbar-width:thin;scrollbar-color:#2e4133 #101612}
+.inventory-dialog::-webkit-scrollbar{width:7px}
+.inventory-dialog::-webkit-scrollbar-track{background:#101612;border-left:1px solid #1c271e;border-radius:0 4px 4px 0}
+.inventory-dialog::-webkit-scrollbar-thumb{background:#2e4133;border:1px solid #3d5644;border-radius:3px;transition:background-color .18s,border-color .18s}
+.inventory-dialog::-webkit-scrollbar-thumb:hover{background:#486550;border-color:#c8d6a0;box-shadow:0 0 6px rgba(200,214,160,.35)}
+.inventory-dialog::-webkit-scrollbar-thumb:active{background:#c8d6a0;border-color:#fff}
+.inventory-heading{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;padding-right:26px}.inventory-heading>span:first-child{width:100%;font:9px 'JetBrains Mono',monospace;color:#96ab86}.inventory-heading h2{font:600 34px 'Barlow Condensed',sans-serif!important}.inventory-heading>span:last-child{margin-left:auto;font:9px 'JetBrains Mono',monospace;color:#a7bb95}
+.inventory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.inventory-weapon{display:flex;flex-direction:column;min-width:0;border:1px solid #8fa87444;padding:14px;text-align:left;border-radius:3px;background:#1c281f;color:#c8d7ba;transition:background-color .15s,border-color .15s;cursor:pointer}.inventory-weapon:hover:not(:disabled){background:#2d3b29;border-color:#b5c79a}.inventory-weapon.equipped{border-color:#c5d99e;background:#35432c;color:#edf3dd}.inventory-weapon:disabled:not(.equipped){opacity:.6;cursor:wait}.inventory-weapon:focus-visible{outline:2px solid #edf3ce;outline-offset:2px}.inventory-weapon-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.inventory-weapon-top strong{font:600 21px 'Barlow Condensed',sans-serif}.inventory-weapon img{width:100%;aspect-ratio:2.6;object-fit:contain;margin:10px 0}.inventory-weapon-type{font:8px 'JetBrains Mono',monospace;color:#acbc9f;overflow-wrap:anywhere}.inventory-ammo{margin-top:8px;font:500 26px 'Barlow Condensed',sans-serif}.inventory-ammo small{font-size:15px;color:#acbc9f}.inventory-weapon-meta{font:8px 'JetBrains Mono',monospace;color:#acbc9f;margin-top:8px}.inventory-equipped-label{margin-top:13px;font:9px 'JetBrains Mono',monospace;color:#cdddba}
+.hud-buttons .inventory-trigger{color:#e0e7cc;border-color:#b5ca8866}.inventory-trigger kbd{font:9px 'JetBrains Mono',monospace}
+.inventory-actions{display:flex;gap:8px;margin-top:13px;align-items:center}.inventory-actions label{font:9px 'JetBrains Mono',monospace;color:#acbc9f}.inventory-actions select,.inventory-actions button{border:1px solid #8fa87466;background:#142018;color:#e4ebd9;padding:6px;font:10px 'JetBrains Mono',monospace}.inventory-actions button{margin-left:auto;cursor:pointer}.inventory-actions button:disabled{opacity:.6;cursor:wait}.inventory-items{border-top:1px solid #8fa87444;padding-top:14px}.inventory-section-label{font:9px 'JetBrains Mono',monospace;color:#a7bb95}.inventory-item-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}.inventory-item-grid>div{min-width:0;padding:10px;background:#101812;border:1px solid #8fa87433;display:grid;gap:3px}.inventory-item-grid svg{color:#c8d6a0}.inventory-item-grid strong{font:600 15px 'Barlow Condensed',sans-serif}.inventory-item-grid small{font:8px 'JetBrains Mono',monospace;color:#acbc9f}
+.inventory-owned-filter{display:flex;align-items:center;gap:8px;margin-top:-10px;font:9px 'JetBrains Mono',monospace;color:#b9c9a5;cursor:pointer}.inventory-owned-filter input{accent-color:#c8d6a0}.inventory-weapon.locked{background:#131a15;color:#8b9684}.inventory-weapon.locked img{opacity:.32;filter:grayscale(1)}.inventory-weapon.locked .inventory-ammo{font-size:14px;line-height:1.6;color:#b49a78}.inventory-actions select:disabled{opacity:.45}.inventory-item-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inventory-item-card{min-width:0;padding:9px;background:#101812;border:1px solid #8fa87433;display:flex;gap:10px;align-items:center}.inventory-item-card strong{display:block;font:600 15px 'Barlow Condensed',sans-serif;color:#dce6cf}.inventory-item-card strong b{color:#c8d6a0;font-weight:600}.inventory-item-card small{display:block;margin-top:4px;font:8px 'JetBrains Mono',monospace;color:#acbc9f}.inventory-item-art{width:38px;height:31px;flex:0 0 38px;display:block;position:relative;background:#243127;border:1px solid #82996e66;box-shadow:inset 0 0 0 2px #0d140f}.inventory-item-art.medkit{background:#b84e40;border-color:#ec9b8d}.inventory-item-art.medkit:before,.inventory-item-art.medkit:after,.inventory-item-art.faid:before,.inventory-item-art.faid:after{content:'';position:absolute;background:#fff}.inventory-item-art.medkit:before,.inventory-item-art.faid:before{width:19px;height:5px;left:9px;top:12px}.inventory-item-art.medkit:after,.inventory-item-art.faid:after{width:5px;height:19px;left:16px;top:5px}.inventory-item-art.faid{background:#d9ded0;border-color:#eef3e2}.inventory-item-art.faid:before,.inventory-item-art.faid:after{background:#5a9c6d}.inventory-item-art.part{background:#20282d}.inventory-item-art.part:before{content:'';position:absolute;inset:7px 5px;background:#d4a030;clip-path:polygon(0 35%,58% 0,100% 35%,74% 100%,18% 83%)}.inventory-item-art.part.tier-2{background:#23323b}.inventory-item-art.part.tier-2:before{background:#eb705a}.inventory-item-art.part.tier-3{background:#33243d;border-color:#c8d6a0}.inventory-item-art.part.tier-3:before{background:#c8d6a0}.inventory-item-art.gold{background:#302817;border-color:#dfbb55}.inventory-item-art.gold:before,.inventory-item-art.gold:after{content:'';position:absolute;border-radius:50%;background:#f0c040;border:1px solid #fff0a1}.inventory-item-art.gold:before{width:16px;height:16px;left:8px;top:8px}.inventory-item-art.gold:after{width:12px;height:12px;left:17px;top:11px}.inventory-empty-items{margin:9px 0 0;font:8px 'JetBrains Mono',monospace;color:#87977e}
+@media(max-width:767px){.inventory-dialog{padding:20px!important;max-height:90dvh}.inventory-heading h2{font-size:28px!important}.inventory-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.inventory-weapon{padding:11px}.inventory-weapon-top strong{font-size:19px}.hud-buttons .inventory-trigger{position:fixed;right:16px;top:60px;width:42px;height:38px;background:#132119dd}.inventory-trigger kbd{display:none}}
+@media(max-width:767px){.inventory-item-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.inventory-tabs-bar{display:flex;gap:6px;width:100%;margin-top:10px;border-bottom:1px solid #8fa87444;padding-bottom:10px}
+.inv-tab-btn{background:#17221b;border:1px solid #8fa87444;color:#a8bca0;padding:7px 14px;font:600 13px 'Barlow Condensed',sans-serif;letter-spacing:1px;cursor:pointer;border-radius:3px;transition:all .15s}
+.inv-tab-btn:hover{background:#233227;color:#e4ebd9;border-color:#b5c79a}
+.inv-tab-btn.active{background:#304332;color:#dce9cb;border-color:#c8d6a0;box-shadow:inset 0 0 0 1px #c8d6a0}
+
+.equipment-tab-content{display:flex;flex-direction:column;gap:18px}
+.equipment-stats-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat-pill{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#101813;border:1px solid #8fa87433;border-radius:3px}
+.stat-pill .stat-icon{color:#c8d6a0;flex-shrink:0}
+.stat-pill span{display:block;font:8px 'JetBrains Mono',monospace;color:#95a88e}
+.stat-pill strong{display:block;font:600 16px 'Barlow Condensed',sans-serif;color:#edf4df}
+.stat-pill strong small{font-size:11px;color:#c8d6a0;font-weight:normal}
+
+.equipment-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:16px}
+.equipment-slots-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.equipment-slot-card{display:flex;flex-direction:column;justify-content:space-between;text-align:left;padding:12px;background:#17231c;border:1px solid #8fa87444;border-radius:3px;cursor:pointer;min-height:86px;transition:all .15s}
+.equipment-slot-card:hover{background:#223328;border-color:#b5c79a}
+.equipment-slot-card.selected{border-color:#c8d6a0;background:#2a3d30;box-shadow:0 0 8px rgba(200,214,160,.25)}
+.equipment-slot-card.empty{border-style:dashed}
+.slot-header{display:flex;justify-content:space-between;align-items:center;width:100%}
+.slot-name{font:8px 'JetBrains Mono',monospace;color:#a2b59b}
+.slot-tier-badge{font:700 9px 'JetBrains Mono',monospace;padding:1px 5px;border-radius:2px;background:#203126;color:#c8d6a0;border:1px solid #8fa87466}
+.slot-tier-badge.tier-2{background:#1b2d3b;color:#7ad0f5;border-color:#4faedb}
+.slot-tier-badge.tier-3{background:#301e38;color:#e89df5;border-color:#c065d6}
+.slot-body strong{display:block;font:600 16px 'Barlow Condensed',sans-serif;color:#e4ebd9;margin-top:6px}
+.slot-body .lvl-tag{color:#c8d6a0;font-size:13px;margin-left:4px}
+.slot-body .slot-stat{display:block;font:9px 'JetBrains Mono',monospace;color:#95a88e;margin-top:2px}
+.slot-body.empty span{display:block;font:600 13px 'Barlow Condensed',sans-serif;color:#677764;margin-top:6px}
+.slot-body.empty small{display:block;font:8px 'JetBrains Mono',monospace;color:#556353}
+
+.equipment-slot-details{display:flex;flex-direction:column;gap:14px;background:#111913;border:1px solid #8fa87433;border-radius:3px;padding:16px}
+.details-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8fa87433;padding-bottom:10px}
+.details-header h3{font:600 20px 'Barlow Condensed',sans-serif;color:#c8d6a0;margin:0}
+.unequip-btn{display:flex;align-items:center;gap:4px;background:#381d1d;border:1px solid #ba5252;color:#f0a8a8;font:9px 'JetBrains Mono',monospace;padding:4px 8px;border-radius:2px;cursor:pointer}
+.unequip-btn:hover{background:#542626;color:#fff}
+.active-item-card{background:#18251e;border:1px solid #8fa87455;padding:12px;border-radius:3px}
+.active-item-title{display:flex;align-items:center;gap:8px}
+.tier-badge{font:700 9px 'JetBrains Mono',monospace;padding:2px 6px;border-radius:2px;background:#203126;color:#c8d6a0;border:1px solid #8fa87466}
+.tier-badge.tier-2{background:#1b2d3b;color:#7ad0f5;border-color:#4faedb}
+.tier-badge.tier-3{background:#301e38;color:#e89df5;border-color:#c065d6}
+.active-item-title h4{font:600 18px 'Barlow Condensed',sans-serif;color:#edf3dd;margin:0}
+.item-desc{font:9px 'JetBrains Mono',monospace;color:#9eb097;margin:6px 0}
+.item-stat-highlight{font:600 14px 'Barlow Condensed',sans-serif;color:#c8d6a0;background:#101a13;padding:4px 8px;display:inline-block;border-radius:2px;border:1px solid #8fa87444}
+.section-subtitle{font:9px 'JetBrains Mono',monospace;color:#8fa387;letter-spacing:1px}
+.no-items-note{font:9px 'JetBrains Mono',monospace;color:#768772;margin-top:8px}
+.owned-items-grid{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.owned-item-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#17221b;border:1px solid #8fa87433;border-radius:3px}
+.owned-item-row.equipped{border-color:#c8d6a0;background:#213326}
+.item-main{display:flex;align-items:center;gap:10px}
+.tier-dot{width:8px;height:8px;border-radius:50%;background:#8fa874}
+.tier-dot.tier-2{background:#4faedb}
+.tier-dot.tier-3{background:#c065d6}
+.item-main strong{font:600 16px 'Barlow Condensed',sans-serif;color:#dce6cf;display:block}
+.item-main small{font:9px 'JetBrains Mono',monospace;color:#8fa387;display:block}
+.equip-action-btn{background:#1c2d20;border:1px solid #8fa87466;color:#c8d6a0;font:10px 'JetBrains Mono',monospace;padding:6px 12px;border-radius:2px;cursor:pointer}
+.equip-action-btn:hover:not(:disabled){background:#29402f;color:#fff;border-color:#c8d6a0}
+.equip-action-btn.active{background:#2e4433;border-color:#c8d6a0;color:#e8f2db}
+
+.materials-tab-content{display:flex;flex-direction:column;gap:20px}
+.materials-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.material-card{background:#111a14;border:1px solid #8fa87433;border-radius:3px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.material-card.zero{opacity:.45}
+.material-card.available{border-color:#8fa87466;background:#16231a}
+.material-card.tier-2.available{border-color:#4faedb66;background:#16232d}
+.material-card.tier-3.available{border-color:#c065d666;background:#24182b}
+.mat-top{display:flex;justify-content:space-between;align-items:center}
+.mat-tier{font:700 8px 'JetBrains Mono',monospace;color:#a2b59b}
+.mat-count{font:600 16px 'Barlow Condensed',sans-serif;color:#edf4df}
+.mat-name{font:600 13px 'Barlow Condensed',sans-serif;color:#d4dfc9;line-height:1.2}
+.mat-type{font:8px 'JetBrains Mono',monospace;color:#788974}
+
+.equipment-thumbnail { width: 72px; height: 72px; flex: 0 0 auto; fill: rgba(53, 67, 44, .5); stroke: #aab991; stroke-width: 4; stroke-linejoin: round; }
+.equipment-thumbnail.compact { width: 38px; height: 38px; }
+.equipment-thumbnail text { fill: #dbe8bf; stroke: none; font: 700 13px 'JetBrains Mono', monospace; }
+.equipment-thumbnail.tier-2 { stroke: #b9bb78; fill: rgba(94, 101, 48, .5); }
+.equipment-thumbnail.tier-3 { stroke: #e0c778; fill: rgba(119, 90, 44, .5); }
+.active-item-card .equipment-thumbnail { float: right; margin: -4px 0 4px 10px; }
+.recipe-header .equipment-thumbnail { margin-right: 7px; }

@@ -1,0 +1,112 @@
+.action-progress-container {
+  position: fixed;
+  left: 50%;
+  bottom: 220px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 280px;
+  max-width: 90vw;
+  animation: actionFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes actionFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.action-progress-card {
+  width: 100%;
+  background: rgba(14, 23, 17, 0.88);
+  border: 1px solid rgba(200, 214, 160, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(200, 214, 160, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 8px 12px;
+  border-radius: 2px;
+}
+
+.action-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.action-progress-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #e2ede5;
+}
+
+.action-icon.heal-pulse {
+  color: #50e3c2;
+  animation: healPulse 1s infinite alternate;
+}
+
+@keyframes healPulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.15); opacity: 1; }
+}
+
+.action-icon.reload-spin {
+  color: #f5a623;
+  animation: reloadSpin 1.2s linear infinite;
+}
+
+@keyframes reloadSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.action-progress-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #c8d6a0;
+  font-size: 11px;
+}
+
+.action-progress-time small {
+  color: rgba(200, 214, 160, 0.65);
+  font-size: 10px;
+}
+
+.action-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.action-progress-fill {
+  height: 100%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.action-progress-fill.is-heal {
+  background: #50e3c2;
+  color: #50e3c2;
+}
+
+.action-progress-fill.is-reload {
+  background: #c8d6a0;
+  color: #c8d6a0;
+}
