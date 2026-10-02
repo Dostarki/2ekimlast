@@ -96,3 +96,9 @@ credentials.json
 *.key
 .credentials
 frontend/node_modules/.cache/default-development/6.pack
+
+# Browser game runtime assets (pyodide + game bundle) must ship with the build
+!frontend/public/local-runtime/
+!frontend/public/local-runtime/**
+!frontend/public/local-runtime/*.zip
+!frontend/public/local-runtime/*.whl
