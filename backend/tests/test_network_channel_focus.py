@@ -1,6 +1,7 @@
 """Module: network.ClientChannel + engine tick isolation kısa odaklı testler."""
 
 import asyncio
+import json
 import sys
 import time
 
@@ -19,12 +20,12 @@ class FakeSlowWebSocket:
         self.sent = []
         self.closed = False
 
-    async def send_json(self, payload):
+    async def send_text(self, payload):
         if self.fail:
             raise self.fail if isinstance(self.fail, Exception) else OSError("simulated send failure")
         if self.delay:
             await asyncio.sleep(self.delay)
-        self.sent.append(payload)
+        self.sent.append(json.loads(payload))
 
     async def close(self):
         self.closed = True

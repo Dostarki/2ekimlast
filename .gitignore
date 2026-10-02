@@ -102,3 +102,4 @@ frontend/node_modules/.cache/default-development/6.pack
 !frontend/public/local-runtime/**
 !frontend/public/local-runtime/*.zip
 !frontend/public/local-runtime/*.whl
+!frontend/runtime-assets/browser-wheels.zip

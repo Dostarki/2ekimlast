@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="18" time="5.488" timestamp="2026-10-02T11:36:19.425400+00:00" hostname="agent-env-a340d31d-746b-473f-9c24-9d5fb57a01ef"><testcase classname="tests.test_iteration3_deploy_build_verification" name="test_preview_read_only_endpoints_contract" time="0.785"><failure message="assert 'campaign' in {'tasks': [{'id': 'follow', 'title': 'UPLINK', 'text': &quot;Bizi X'te takip et&quot;, 'url': 'https://x.com/lastzhood', ...}, {'id': 'like', 'title': 'SIGNAL', 'text': 'Gonderiyi begen', 'url': 'https://x.com/lastzhood/status/1900000000000000000', ...}, {'id': 'repost', 'title': 'RELAY', 'text': 'Paylas ve duyur', 'url': 'https://x.com/lastzhood/status/1900000000000000000', ...}, {'id': 'comment', 'title': 'VOICE', 'text': 'Yanitla ve katil', 'url': 'https://x.com/intent/tweet?text=LastZHood+icin+heyecanliyim%21&amp;url=https%3A%2F%2Fx.com%2Flastzhood%2Fstatus%2F1900000000000000000', ...}], 'x_profile_url': 'https://x.com/lastzhood', 'comment_message': 'LastZHood icin heyecanliyim!', 'share_text': 'LastZHood erken erisime katiliyorum!', ...}">backend/tests/test_iteration3_deploy_build_verification.py:75: in test_preview_read_only_endpoints_contract
+    assert "campaign" in cfg_data
+E   assert 'campaign' in {'tasks': [{'id': 'follow', 'title': 'UPLINK', 'text': "Bizi X'te takip et", 'url': 'https://x.com/lastzhood', ...}, {'id': 'like', 'title': 'SIGNAL', 'text': 'Gonderiyi begen', 'url': 'https://x.com/lastzhood/status/1900000000000000000', ...}, {'id': 'repost', 'title': 'RELAY', 'text': 'Paylas ve duyur', 'url': 'https://x.com/lastzhood/status/1900000000000000000', ...}, {'id': 'comment', 'title': 'VOICE', 'text': 'Yanitla ve katil', 'url': 'https://x.com/intent/tweet?text=LastZHood+icin+heyecanliyim%21&amp;url=https%3A%2F%2Fx.com%2Flastzhood%2Fstatus%2F1900000000000000000', ...}], 'x_profile_url': 'https://x.com/lastzhood', 'comment_message': 'LastZHood icin heyecanliyim!', 'share_text': 'LastZHood erken erisime katiliyorum!', ...}</failure></testcase><testcase classname="tests.test_backend_short_smoke" name="test_public_api_and_static_audio_smoke" time="0.261"><failure message="AssertionError: assert 10 == 9&#10; +  where 10 = len({'glock18': {'name': 'Glock 18', 'damage': 18, 'mag': 17, 'rate': 0.065, ...}, 'ak47': {'name': 'AK-47', 'damage': 35, 'mag': 30, 'rate': 0.1, ...}, 'ak117': {'name': 'AK-117', 'damage': 26, 'mag': 35, 'rate': 0.075, ...}, 'ak107': {'name': 'AK-107', 'damage': 30, 'mag': 30, 'rate': 0.09, ...}, ...})">backend/tests/test_backend_short_smoke.py:70: in test_public_api_and_static_audio_smoke
+    assert len(weapons_data) == 9
+E   AssertionError: assert 10 == 9
+E    +  where 10 = len({'glock18': {'name': 'Glock 18', 'damage': 18, 'mag': 17, 'rate': 0.065, ...}, 'ak47': {'name': 'AK-47', 'damage': 35, 'mag': 30, 'rate': 0.1, ...}, 'ak117': {'name': 'AK-117', 'damage': 26, 'mag': 35, 'rate': 0.075, ...}, 'ak107': {'name': 'AK-107', 'damage': 30, 'mag': 30, 'rate': 0.09, ...}, ...})</failure></testcase><testcase classname="tests.test_backend_short_smoke" name="test_zombie_distance_modes_idle_attack_and_pursuit_end" time="0.001"><failure message="AssertionError: assert 'attack' in {'idle', 'wander'}">backend/tests/test_backend_short_smoke.py:113: in test_zombie_distance_modes_idle_attack_and_pursuit_end
+    assert z2["mode"] in {"idle", "wander"}
+E   AssertionError: assert 'attack' in {'idle', 'wander'}</failure></testcase><testcase classname="tests.test_backend_short_smoke" name="test_world_enterable_points_and_interior_mapping" time="0.000" /><testcase classname="tests.test_backend_short_smoke" name="test_interior_has_no_invulnerability_when_unprotected" time="0.000"><failure message="assert 100 == 80">backend/tests/test_backend_short_smoke.py:137: in test_interior_has_no_invulnerability_when_unprotected
+    assert target["hp"] == 80
+E   assert 100 == 80</failure></testcase><testcase classname="tests.test_backend_short_smoke" name="test_combat_projectiles_fire_and_ammo" time="0.001"><failure message="assert False&#10; +  where False = any(&lt;generator object test_combat_projectiles_fire_and_ammo.&lt;locals&gt;.&lt;genexpr&gt; at 0xfe4107962330&gt;)">backend/tests/test_backend_short_smoke.py:153: in test_combat_projectiles_fire_and_ammo
+    assert any(p["kind"] == "rocket" for p in game.projectiles)
+E   assert False
+E    +  where False = any(&lt;generator object test_combat_projectiles_fire_and_ammo.&lt;locals&gt;.&lt;genexpr&gt; at 0xfe4107962330&gt;)</failure></testcase><testcase classname="tests.test_backend_short_smoke" name="test_audio_assets_hashes_and_credits" time="0.001" /><testcase classname="tests.test_iteration3_package_local_engine_offline" name="test_package_local_engine_restores_wheels_offline_and_verifies_runtime" time="0.141" /><testcase classname="tests.test_iteration3_package_local_engine_offline" name="test_package_local_engine_rejects_archive_path_traversal_members" time="0.092" /><testcase classname="tests.test_iteration3_package_local_engine_offline" name="test_package_local_engine_missing_archive_and_wheel_fails_clearly" time="0.102" /><testcase classname="tests.test_local_runtime_prepare_population" name="test_prepare_step_completes_1500_zombies_and_64_bots_before_ready" time="0.089" /><testcase classname="tests.test_local_runtime_prepare_population" name="test_prepare_step_zero_population_ready_state" time="0.001" /><testcase classname="tests.test_local_runtime_prepare_population" name="test_prepare_step_handles_4500_without_hidden_cap" time="0.447" /><testcase classname="tests.test_iteration3_deploy_build_verification" name="test_clean_runtime_lifespan_and_handlers_pass" time="1.886"><failure message="assert 58 &gt;= 60">backend/tests/test_iteration3_deploy_build_verification.py:131: in test_clean_runtime_lifespan_and_handlers_pass
+    assert payload["api_route_count"] &gt;= 60
+E   assert 58 &gt;= 60</failure></testcase><testcase classname="tests.test_network_channel_focus" name="test_client_channel_coalesces_latest_state_and_caps_events_in_order" time="0.061"><failure message="AssertionError: No state was sent&#10;assert []&#10; +  where [] = &lt;test_network_channel_focus.FakeSlowWebSocket object at 0xfe40f0b57590&gt;.sent">backend/tests/test_network_channel_focus.py:68: in test_client_channel_coalesces_latest_state_and_caps_events_in_order
+    asyncio.run(_flow())
+/usr/local/lib/python3.11/asyncio/runners.py:190: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+backend/tests/test_network_channel_focus.py:47: in _flow
+    assert ws.sent, "No state was sent"
+E   AssertionError: No state was sent
+E   assert []
+E    +  where [] = &lt;test_network_channel_focus.FakeSlowWebSocket object at 0xfe40f0b57590&gt;.sent</failure></testcase><testcase classname="tests.test_network_channel_focus" name="test_client_channel_prioritizes_control_messages_and_closes_on_timeout_or_error" time="0.081"><failure message="assert 0 &gt;= 2&#10; +  where 0 = len([])&#10; +    where [] = &lt;test_network_channel_focus.FakeSlowWebSocket object at 0xfe40f0ef13d0&gt;.sent">backend/tests/test_network_channel_focus.py:113: in test_client_channel_prioritizes_control_messages_and_closes_on_timeout_or_error
+    asyncio.run(_priority_and_timeout())
+/usr/local/lib/python3.11/asyncio/runners.py:190: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+backend/tests/test_network_channel_focus.py:79: in _priority_and_timeout
+    assert len(ws.sent) &gt;= 2
+E   assert 0 &gt;= 2
+E    +  where 0 = len([])
+E    +    where [] = &lt;test_network_channel_focus.FakeSlowWebSocket object at 0xfe40f0ef13d0&gt;.sent</failure></testcase><testcase classname="tests.test_network_channel_focus" name="test_game_run_20hz_not_blocked_by_slow_socket_writer_and_respawn_contract" time="0.652"><failure message="AttributeError: 'FakeSlowWebSocket' object has no attribute 'send_text'">backend/tests/test_network_channel_focus.py:155: in test_game_run_20hz_not_blocked_by_slow_socket_writer_and_respawn_contract
+    asyncio.run(_flow())
+/usr/local/lib/python3.11/asyncio/runners.py:190: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+backend/tests/test_network_channel_focus.py:153: in _flow
+    await asyncio.gather(*(player["channel"].stop() for player in list(game.players.values())))
+backend/network.py:76: in stop
+    await self.task
+backend/network.py:61: in run
+    await asyncio.wait_for(self.ws.send_text(orjson.dumps(message, option=orjson.OPT_NON_STR_KEYS).decode()), .5)
+                           ^^^^^^^^^^^^^^^^^
+E   AttributeError: 'FakeSlowWebSocket' object has no attribute 'send_text'</failure></testcase><testcase classname="tests.test_iteration3_deploy_build_verification" name="test_local_runtime_assets_serve_binary_content_types" time="1.953" /></testsuite></testsuites>

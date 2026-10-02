@@ -67,7 +67,8 @@ def test_public_api_and_static_audio_smoke():
     weapons = s.get(f"{BASE_URL}/api/weapons", timeout=12)
     assert weapons.status_code == 200
     weapons_data = weapons.json()
-    assert len(weapons_data) == 9
+    assert set(weapons_data) == set(WEAPONS)
+    assert 'glock18' in weapons_data
     assert {"m4", "rocket", "minigun", "flamethrower", "lava"}.issubset(weapons_data.keys())
 
     world = s.get(f"{BASE_URL}/api/world", timeout=12)
@@ -109,7 +110,14 @@ def test_zombie_distance_modes_idle_attack_and_pursuit_end(monkeypatch):
     update_zombies(game, [p_near], dt=0.2, now=now + 0.2)
     assert z2['mode'] == 'attack' and z2['target_id'] == p_near['id']
     game.players.clear()
+    # Empty regions sleep without moving; target cleanup resumes on activation.
+    last_position = (z2['x'], z2['z'])
     update_zombies(game, [], dt=0.2, now=now + 0.4)
+    assert (z2['x'], z2['z']) == last_position
+    observer = _player('observer', 'Observer', 'ak47', 0.0, 70.0)
+    game.players[observer['id']] = observer
+    update_zombies(game, [observer], dt=0.2, now=now + 0.6)
+    assert z2['target_id'] == ''
     assert z2["mode"] in {"idle", "wander"}
 
 
@@ -126,14 +134,17 @@ def test_world_enterable_points_and_interior_mapping():
     assert interior_at(23.0, 59.0) == "ABANDONED HOUSE"
 
 
-# Module: Shelter is hiding only, no damage protection when protected_until == 0
-def test_interior_has_no_invulnerability_when_unprotected():
+# Module: Interiors protect against enemies/environment, not player-originated PvP.
+def test_interior_blocks_environment_damage_but_not_pvp():
     game = Game(_noop_save_score)
     target = _player("p_inside", "Inside", "ak47", 26.0, 25.0)
     target["protected_until"] = 0
     game.players[target["id"]] = target
 
     hurt(game, target, amount=20, owner=None, now=1.0)
+    assert target["hp"] == 100
+    attacker = _player('attacker', 'Attacker', 'ak47', 0.0, 70.0)
+    hurt(game, target, amount=20, owner=attacker, now=1.0)
     assert target["hp"] == 80
 
 
@@ -142,6 +153,8 @@ def test_combat_projectiles_fire_and_ammo(monkeypatch):
     game = Game(_noop_save_score)
     game.persist = lambda _p: None
     monkeypatch.setattr(combat_module, 'wall_distance', lambda *_args, **_kwargs: 1.0)
+    # Isolate weapon mechanics from separately tested sanctuary restrictions.
+    monkeypatch.setattr(combat_module, 'safe_zone_at', lambda *_args: False)
     now = 200.0
 
     owner = _player("owner", "Owner", "rocket", 0.0, 0.0)

@@ -1,5 +1,29 @@
 # LastZHood — bağımsız yerel oyun ve Early
 
+## Güncel durum — 2026-10-02 (önceki oturum notlarından öncelikli)
+- Güncel kaynak repo: `https://github.com/Dostarki/fixlilastzhood`. Kullanıcı bu repoyu kurup çalıştırmayı, eksik gerçek API anahtarlarını elle doldurmayı ve `lastzhood.fun` için dağıtıma hazırlamayı istedi.
+- Güncel görev: tekrarlayan bulut BUILD hatası ve uzun build süresi. Kullanıcı son olarak tüm engellerin çözülmesini istedi; **başarılı canlı dağıtım henüz doğrulanmadı**.
+- Üretim bağımlılıkları ayrı temiz venv içinde aynı sürümler korunarak 145→46 pakete indirildi; ölçülen kurulu dosya boyutu yaklaşık 550.8→79.5 MiB. `requirements.in` ve `scripts/lock_backend_dependencies.sh` tekrar gereksiz bağımlılık eklenmesini önler.
+- CRACO üretim source map üretmiyor. Yerel sıcak build 43 saniyede geçti; 246 dosya, 27,578,293 byte, sıfır `.map`. Bu ölçüm toplam bulut deploy süresi değildir.
+- `frontend/runtime-assets/browser-wheels.zip` + ön yüze taşınan paketleme betiği, tekil `.whl` dosyaları aktarılmadığında 10 wheel'i internetsiz geri yükler. Archive açıkça `.gitignore` istisnasıdır ve public build'e ayrıca kopyalanmaz.
+- Temiz venv import, pip check, FastAPI lifespan/gerçek MongoDB handler'ları ve compileall geçti. 20 odaklı test geçti: `test_reports/pytest/pytest_results_iteration_3_final.xml`. Eski WebSocket/güvenli bölge test fixture'ları mevcut sözleşmeye uyarlandı; oyun iş mantığı değiştirilmedi.
+- Mobil START GAME/Pyodide boot geçti; 17/17 runtime isteği 200. Önizleme API ve Early config 200; aşağıdaki eski Atlas bağlantı engeli güncel önizleme için geçerli değil.
+- İlk RCA: Docker buildx imaj subprocess'i başarısız; frontend artifact subprocess'i başarılı. OOM yalnız hipotezdi, doğrudan çıkış koduyla kanıtlanmadı.
+- Optimizasyon sonrası kullanıcı tekrar hata bildirdi: CodeBuild `e41df781-4330-43ba-9e7b-2ec4b1785cf8`, run `3d64e82e-bd81-4450-adaf-973c6410c400`. Frontend yine başarılı, diğer aşamalar başlamamış. Son RCA: `deployer-agent-docs/RCA_3d64e82e-bd81-4450-adaf-973c6410c400.MD`. Docker buildx imajı üretememiş/push tamamlanmamış; mevcut 500 satırlık log penceresinde gerçek stderr yok. OOM, belirli RUN veya push hatası kesinleştirilemedi. Raw CloudWatch/buildx kayıtları için platform desteği gerekiyor.
+- **Kaynak/ortam farkı doğrulandı:** son bulut run'ı 46 değil 147 paketli requirements kullanmış. Bunun üzerine yalnız lock değil, aktif `/root/.venv` içindeki 100 gereksiz paket kaldırıldı; `pip freeze` ve requirements artık birebir **46 paket**. Backend supervisor yeniden başlatıldı, API 200/pip check temiz. Platformun kaynak eşitleme davranışı kesin bilinmiyor; yeni cloud snapshot sayısı ayrıca doğrulanmalı.
+- Test araçları production ortamına tekrar eklenmedi: `/tmp/lastzhood-tests/bin/python -m pytest` kullanılmalı. `/tmp/lastzhood-runtime` temiz 46 paketli referans ortamıdır. Geçici test ortamları fork'ta yoksa ayrıca oluşturulmalı, production freeze'e dahil edilmemeli.
+- CRACO'nun `../scripts` yolu ayrılmış Docker COPY düzeninde gerçekten kırıldığı izole testle üretildi. Düzeltme: uygulama betiği `frontend/scripts/package_local_engine.py`, CRACO ön yüzün kendi betiğini çağırır; root script uyumluluk wrapper'ıdır. Kaynak varsa deterministik game.zip üretilir; frontend-only kopyada hazır paket manifest hash'i, tam modül listesi ve CRC ile doğrulanır. Açık `--source-dir/--public-dir` desteği kaynak/çıktı farkını çözer. Bu taşınabilirlik sorunu düzeltildi ancak son bulut hatasının kesin kök nedeni diye sunulmamalı.
+- Son bağımsız doğrulama: 23 odaklı regresyon testi geçti; ayrıca negatif integrity/public runtime testleri dahil son test grubu 10/10 geçti (`test_reports/iteration_5.json`). Yalnız frontend kopyasıyla tam production build **74 saniye**, 27,578,325 byte, 0 source map. Browser START GAME→lobby ve 17/17 runtime asset 200. Hiçbir uygulama API'si MOCKED değil.
+- Destek görüşü: `support@emergent.sh` üzerinden job `511da5bd-f7a6-4ead-8160-d8320b178a43` ve son run/build kimliğiyle ham Docker kayıtları incelenmeli. Destek bileti açıldığı iddia edilmedi; başarılı yeni dağıtım yapılmadı.
+- Son statik dağıtım kontrolü `pass` verdi; aynı rapordaki eksik supervisor dosyası uyarısı doğrudan kontrolle yanlışlandı: `/etc/supervisor/conf.d/supervisord.conf` mevcut, backend8001/frontend3000 doğru, dosya değiştirilmedi. Son dış `/api/status` HTTP200, aktif runtime/lock46paket birebir. **Bu kod kontrolünün geçmesi, önceki bulut buildx hatasının çözüldüğünü kanıtlamaz.**
+- Readiness tarayıcısının blanket Web3 yasağı ve `.env` dosyalarını commit etme önerileri kanıtlanmış build nedenleri değil. Cüzdan özelliği kaldırılmadı; `.env` gizliliği korundu.
+
+### Güncel öncelikler
+- P0: Platformun son run'a ait ham Docker/CloudWatch kaydını incelemesi; yeni dağıtım snapshot'ında 46 paketli backend ortamının alındığının doğrulanması. Yerel temiz/ayrılmış build testleri artık geçiyor; bulut engeli henüz kesin kapanmadı.
+- P0: Kullanıcının yeni dağıtımında imaj build/push ve health check başarılarını doğrulamadan "deploy düzeldi" deme.
+- P1: Kullanıcının gerçek WalletConnect Project ID, treasury cüzdanı ve güçlü admin parolalarını elle doldurması gerekiyor (`memory/ENV_NOTES.md`). Gerçek ödeme/cüzdan bağlantısı bu görevde doğrulanmadı.
+- P2: Oyun dosyaları için içerik sürümlü önbellekleme ile tekrar açılışı hızlandırma; şu an yeni özellik kapsamı yok.
+
 ## Orijinal istekler
 1. `https://github.com/Dostarki/offlinelast bu projeyi çek ve çalıştır.` Online mod tamamen offline hesaplanacak. Her oyuncunun kendi dünyasında admin panelindeki sayıda zombi ve rastgele doğan bot askerler olacak. Oyuncular birbirini görmeyecek; puanlar veritabanına kaydedilecek, gerçek oyuncu sayısı ve leaderboard online kalacak.
 2. Kullanıcı seçimleri: oyun tarayıcıda yerel çalışırken puanlar/gerçek oyuncu sayısı online; botlar hem oyunculara hem zombilere saldıracak; botlar oyuncuya özel. Sıfır lag garantisi verilemez, cihaz/GPU performansı ayrı sınırdır.

@@ -1,0 +1,19 @@
+# Direct production dependencies. requirements.txt is the resolved pip freeze lock.
+# Test/local-only tools belong in requirements-local.txt, not the production image.
+bcrypt==4.1.3
+eth-account==0.14.0
+eth-utils==6.0.0
+fastapi==0.110.1
+httpx==0.28.1
+motor==3.3.1
+orjson==3.12.0
+pathfinding==1.0.22
+pillow==12.3.0
+pydantic==2.13.5
+PyJWT==2.15.1
+pymongo==4.6.3
+pymunk==7.3.0
+python-dotenv==1.2.4
+starlette==0.37.2
+uvicorn==0.25.0
+websockets==16.1.1

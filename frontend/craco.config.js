@@ -6,8 +6,11 @@ require("dotenv").config();
 // Craco sets NODE_ENV=development for start, NODE_ENV=production for build
 const isDevServer = process.env.NODE_ENV !== "production";
 if (!isDevServer) {
+  // CRA reads this before constructing its production webpack configuration.
+  // Public source maps duplicate large wallet/game bundles and slow build/uploads.
+  process.env.GENERATE_SOURCEMAP = "false";
   // Fail the build rather than publish a game with missing browser runtime archives.
-  require('child_process').execFileSync('python3', [path.resolve(__dirname, '../scripts/package_local_engine.py')], { stdio: 'inherit' });
+  require('child_process').execFileSync('python3', [path.resolve(__dirname, 'scripts/package_local_engine.py')], { stdio: 'inherit' });
 }
 
 // Environment variable overrides

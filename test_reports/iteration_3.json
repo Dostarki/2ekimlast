@@ -1,0 +1,64 @@
+{
+  "summary": "Validated deploy-readiness focus areas: clean production-runtime lifespan/handlers, preview read-only endpoints, offline wheel-restore packaging flow, production frontend build output, and mobile START GAME/Pyodide boot.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "build-packaging (scripts/assets/browser-wheels.zip)",
+        "issue": "Critical deployment artifact appears untracked in git working tree (?? scripts/assets/browser-wheels.zip). If omitted from snapshot, offline wheel restore path will break in cloud builds using fresh checkout.",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "/api/game internals (existing regression suites)",
+        "issue": "Existing tests show contract drift/failures (weapon count expectation, zombie/combat expectations, network Fake websocket send_json->send_text mismatch). Needs triage whether tests are stale or runtime behavior regressed."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "WalletConnect/Reown config load",
+        "issue": "Console shows 403/400 due placeholder projectId (REPLACE_WITH_WALLETCONNECT_PROJECT_ID); falls back to defaults.",
+        "affected_selectors": [
+          "CONNECT WALLET"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration3_deploy_build_verification.py",
+    "/app/backend/tests/test_iteration3_package_local_engine_offline.py",
+    "/app/test_reports/pytest/pytest_results_iteration_3.xml",
+    "/app/test_reports/pytest/pytest_results_iteration_3_focus.xml",
+    "/tmp/lastzhood-frontend-build.log",
+    "/tmp/lastzhood-frontend-build.time"
+  ],
+  "action_items": [
+    "Commit/package scripts/assets/browser-wheels.zip into source snapshot used by deploy pipeline; verify it is present in remote branch and cloud checkout.",
+    "Decide per failing legacy regression tests whether behavior changed intentionally; then update tests or fix runtime accordingly.",
+    "Set real REACT_APP_WALLETCONNECT_PROJECT_ID before wallet-enabled production release.",
+    "Optional build hygiene: investigate CRACO warnings for '@react-native-async-storage/async-storage' and dynamic dependency-expression warnings to reduce future build risk/noise."
+  ],
+  "critical_code_review_comments": [
+    "backend/server.py is 1123 lines (>700 guideline) and should be split into focused routers/modules for maintainability and lower regression risk.",
+    "Deployment safety currently depends on archive tracking correctness; treat packaging asset presence as a release gate.",
+    "Build pipeline currently compiles successfully but with unresolved-module warning from MetaMask SDK dependency tree; monitor to avoid future hard failures when toolchain tightens."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration3_deploy_build_verification.py",
+    "/app/backend/tests/test_iteration3_package_local_engine_offline.py",
+    "/app/test_reports/iteration_3.json"
+  ],
+  "success_rate": {
+    "backend": "67% overall on executed suites (12/18 first pass incl. legacy regressions); 100% on new deployment-focused suites (6/6)",
+    "frontend": "100% for requested smoke/build checks"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Production build succeeded in 43s (EXIT_CODE=0), build dir has 246 files / 27,578,293 bytes, and 0 .map files (GENERATE_SOURCEMAP disabled effective). Mobile 390x844 START GAME boot succeeded with 17/17 local-runtime responses HTTP 200 and no missing-asset errors. Clean /tmp/lastzhood-runtime lifespan probe passed with real DB env. Offline packaging tests passed on disposable minimal checkout with network blocked. However git status currently shows browser-wheels.zip and wheel files as untracked in this workspace; confirm remote commit/snapshot contains required zip.",
+  "rca of the issue": "Likely root cause for recurring deploy/build uncertainty is artifact provenance in clean cloud checkouts: local workspace can build because browser wheel assets exist, but cloud snapshot may omit them if not committed/tracked. Mitigation: enforce CI preflight that fails when scripts/assets/browser-wheels.zip missing and run package_local_engine.py --check in checkout environment."
+}
