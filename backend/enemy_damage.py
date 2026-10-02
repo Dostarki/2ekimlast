@@ -2,7 +2,8 @@ import time
 
 from combat import hurt
 from world import safe_zone_at
-from soldier import RECOVERY_SECONDS, runtime_snapshot
+from soldier_state import RECOVERY_SECONDS, runtime_snapshot
+from combat_effects import dismiss_hive
 
 
 def damage_player(game, player, amount, name, now):
@@ -39,17 +40,6 @@ def apply_status(player, kind, source, name, now, duration=5):
     previous = effects.get(kind, {})
     effects[kind] = {'source': source, 'name': name, 'until': now+duration,
                      'next_tick': previous.get('next_tick', now+1), 'damage': 3 if kind == 'bleeding' else 4}
-
-
-def dismiss_hive(game, owner):
-    game.swarms[:] = [s for s in game.swarms if s['owner'] != owner]
-    for player in game.players.values():
-        if safe_zone_at(player['x'], player['z']):
-            player.get('statuses', {}).clear()
-            continue
-        poison = player.get('statuses', {}).get('poison')
-        if poison and poison['source'] == owner:
-            player['statuses'].pop('poison', None)
 
 
 def update_statuses(game, now):

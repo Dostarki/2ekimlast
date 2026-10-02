@@ -53,49 +53,78 @@ def destination(game, p, target, now):
     return goal
 
 
+def update_bot_grid(game, now):
+    if now < getattr(game, 'bot_grid_at', 0):
+        return
+    game.bot_grid_at = now + .2
+    game.bot_grid = defaultdict(list)
+    for entity in [*game.players.values(), *game.zombies.values(), *game.bosses.values()]:
+        if entity['hp'] > 0:
+            game.bot_grid[(int(entity['x'] // 64), int(entity['z'] // 64))].append(entity)
+
+
+def _target_eligible(player, entity, now):
+    return (entity['id'] != player['id'] and entity['hp'] > 0
+            and entity.get('protected_until', 0) <= now and not entity.get('awaiting_input', False)
+            and math.hypot(entity['x'] - player['x'], entity['z'] - player['z']) < 48)
+
+
+def select_bot_target(game, player, now):
+    gx, gz = int(player['x'] // 64), int(player['z'] // 64)
+    nearby = [entity for x in range(gx - 1, gx + 2) for z in range(gz - 1, gz + 2)
+              for entity in game.bot_grid.get((x, z), []) if _target_eligible(player, entity, now)]
+    nearby.sort(key=lambda entity: (entity['x'] - player['x']) ** 2 + (entity['z'] - player['z']) ** 2)
+    return next((entity for entity in nearby[:5]
+                 if wall_distance(player['x'], player['z'], entity['x'], entity['z']) > .98), None)
+
+
+def bot_movement(player, goal):
+    dx, dz = goal['x'] - player['x'], goal['z'] - player['z']
+    distance = max(.01, math.hypot(dx, dz))
+    return {'x': dx / distance, 'z': dz / distance, 'angle': math.atan2(dx, dz),
+            'fire': False, 'aim_distance': distance}
+
+
+def bot_combat(player, target, controls, now):
+    tx, tz = target['x'] - player['x'], target['z'] - player['z']
+    distance = math.hypot(tx, tz)
+    angle = math.atan2(tx, tz) + random.uniform(-.09, .09)
+    controls.update(angle=angle, aim_distance=distance,
+                    fire=distance < WEAPONS[player['weapon']]['range'] and random.random() > .17)
+    if distance < 15:
+        sign = 1 if int(now / 2 + len(player['name'])) % 2 else -1
+        controls.update(x=-math.cos(angle) * sign, z=math.sin(angle) * sign)
+        if distance < 7:
+            controls.update(x=-math.sin(angle), z=-math.cos(angle))
+
+
+def update_bot_ai(game, player, now):
+    if player['hp'] <= 0:
+        if now - player['died_at'] >= 10:
+            game.respawn(player)
+        return
+    if now < player.get('brain_at', 0):
+        return
+    player['brain_at'] = now + random.uniform(.14, .24)
+    if player['weapon'] == 'glock18' and now - player['born'] > 1:
+        equip_weapon(player, random.choice(['ak47', 'ak117', 'm4', 'shotgun']), now)
+    target = select_bot_target(game, player, now)
+    controls = bot_movement(player, destination(game, player, target, now))
+    if target:
+        bot_combat(player, target, controls, now)
+    if not free(player['x'] + controls['x'], player['z'] + controls['z']):
+        controls['x'], controls['z'] = controls['z'], -controls['x']
+    controls.update(sprint=not target and player['stamina'] > 25,
+                    reload=player['ammo'] < WEAPONS[player['weapon']]['mag'] * (.4 if not target else .05))
+    game.set_input(player, controls)
+
+
 def update_bots(game, now):
     balance_bots(game, now)
-    bots = [p for p in game.players.values() if p.get('bot')]
+    bots = [player for player in game.players.values() if player.get('bot')]
     if not bots:
         return
-    if now >= getattr(game, 'bot_grid_at', 0):
-        game.bot_grid_at = now+.2
-        game.bot_grid = defaultdict(list)
-        for e in [*game.players.values(), *game.zombies.values(), *game.bosses.values()]:
-            if e['hp'] > 0:
-                game.bot_grid[(int(e['x']//64), int(e['z']//64))].append(e)
+    update_bot_grid(game, now)
     game.bot_path_budget = 1
-    for p in bots:
-        if p['hp'] <= 0:
-            if now-p['died_at'] >= 10:
-                game.respawn(p)
-            continue
-        if now < p.get('brain_at', 0):
-            continue
-        p['brain_at'] = now+random.uniform(.14, .24)
-        if p['weapon'] == 'glock18' and now-p['born'] > 1:
-            equip_weapon(p, random.choice(['ak47', 'ak117', 'm4', 'shotgun']), now)
-        gx, gz = int(p['x']//64), int(p['z']//64)
-        nearby = [e for x in range(gx-1, gx+2) for z in range(gz-1, gz+2) for e in game.bot_grid.get((x, z), [])
-                  if e['id'] != p['id'] and e['hp'] > 0 and e.get('protected_until', 0) <= now and not e.get('awaiting_input', False)
-                  and math.hypot(e['x']-p['x'], e['z']-p['z']) < 48]
-        nearby.sort(key=lambda e: (e['x']-p['x'])**2+(e['z']-p['z'])**2)
-        target = next((e for e in nearby[:5] if wall_distance(p['x'], p['z'], e['x'], e['z']) > .98), None)
-        goal = destination(game, p, target, now)
-        dx, dz = goal['x']-p['x'], goal['z']-p['z']; distance = max(.01, math.hypot(dx, dz))
-        mx, mz = dx/distance, dz/distance
-        angle = math.atan2(dx, dz)
-        firing = False
-        if target:
-            tx, tz = target['x']-p['x'], target['z']-p['z']; distance = math.hypot(tx, tz)
-            angle = math.atan2(tx, tz)+random.uniform(-.09, .09)
-            firing = distance < WEAPONS[p['weapon']]['range'] and random.random() > .17
-            if distance < 15:
-                sign = 1 if int(now/2+len(p['name'])) % 2 else -1
-                mx, mz = -math.cos(angle)*sign, math.sin(angle)*sign
-                if distance < 7:
-                    mx, mz = -math.sin(angle), -math.cos(angle)
-        if not free(p['x']+mx, p['z']+mz):
-            mx, mz = mz, -mx
-        game.set_input(p, {'x': mx, 'z': mz, 'angle': angle, 'fire': firing, 'sprint': not target and p['stamina'] > 25,
-                           'reload': p['ammo'] < WEAPONS[p['weapon']]['mag']*(.4 if not target else .05), 'aim_distance': distance})
+    for player in bots:
+        update_bot_ai(game, player, now)

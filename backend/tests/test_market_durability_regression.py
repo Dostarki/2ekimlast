@@ -239,8 +239,11 @@ def test_payment_hash_reservation_and_economy_ledger_are_idempotent(tmp_path, mo
         with pytest.raises(ValueError, match='transaction_hash_invalid'):
             await market_payments.reserve_transaction_hash(db, order, 'fake', account)
 
-        first = await record_economy_ledger(db, account, 12, 'test', 'test', 'source', request_id='ledger-1')
-        second = await record_economy_ledger(db, account, 12, 'test', 'test', 'source', request_id='ledger-1')
+        from economy import EconomyTransaction
+        transaction = EconomyTransaction(account_id=account, gold_delta=12, action='test',
+                                         source_type='test', source_id='source', request_id='ledger-1')
+        first = await record_economy_ledger(db, transaction)
+        second = await record_economy_ledger(db, transaction)
         assert first['transaction_id'] == second['transaction_id']
         assert await db.economy_ledger.count_documents({'request_id': 'ledger-1'}) == 1
     _run(scenario())

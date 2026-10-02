@@ -10,14 +10,8 @@ import uuid
 import unicodedata
 from typing import Dict, Any, Optional, List
 from world import WEAPONS, safe_zone_at, free, wall_distance
-
-RECOVERY_SECONDS = 120
-_RUNTIME_KEYS = ('hp', 'ammo', 'reserve', 'status', 'recovery_until_utc')
-
-
-def runtime_snapshot(soldier):
-    """Return the only companion runtime values which are valid after restart."""
-    return {key: soldier[key] for key in _RUNTIME_KEYS if key in soldier}
+from soldier_state import RECOVERY_SECONDS, RUNTIME_KEYS as _RUNTIME_KEYS, runtime_snapshot
+from combat import targets, allied_fire_disabled, hurt
 
 
 def normalize_runtime(record):
@@ -338,7 +332,6 @@ def update_soldier(*args, **kwargs):
     tethered = dist_to_owner <= 24.0
     target = None
     if tethered and not safe_zone_at(owner['x'], owner['z']) and not safe_zone_at(soldier['x'], soldier['z']):
-        from combat import targets, allied_fire_disabled
         candidates = []
         for e in targets(game):
             if e['id'] == owner['id'] or e.get('hp', 0) <= 0 or safe_zone_at(e['x'], e['z']):
@@ -389,7 +382,6 @@ def update_soldier(*args, **kwargs):
                     dx = math.sin(shoot_angle)
                     dz = math.cos(shoot_angle)
 
-                    from combat import targets, allied_fire_disabled, hurt
                     reach = soldier['range'] * wall_distance(soldier['x'], soldier['z'], soldier['x'] + dx * soldier['range'], soldier['z'] + dz * soldier['range'])
                     target, nearest = None, reach
                     for e in targets(game):

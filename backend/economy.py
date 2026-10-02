@@ -1,12 +1,25 @@
 import uuid
 import logging
 from datetime import datetime, timezone
+from dataclasses import dataclass, replace
 from typing import Dict, Any, Optional, Tuple
 
 log = logging.getLogger(__name__)
 
 # In-memory ledger buffer for fast access and fallback
 _ECONOMY_LEDGER: list = []
+
+
+@dataclass(frozen=True, kw_only=True)
+class EconomyTransaction:
+    account_id: str
+    gold_delta: int
+    action: str
+    source_type: str
+    source_id: Optional[str] = None
+    reason: str = ''
+    request_id: Optional[str] = None
+    account_revision: int = 1
 
 
 def compute_vip_gold_bonus(base_gold: int, is_vip: bool, remainder: int = 0) -> Tuple[int, int]:
@@ -23,31 +36,21 @@ def compute_vip_gold_bonus(base_gold: int, is_vip: bool, remainder: int = 0) -> 
     return bonus_gold, new_remainder
 
 
-async def record_economy_ledger(
-    db,
-    account_id: str,
-    gold_delta: int,
-    action: str,
-    source_type: str,
-    source_id: Optional[str] = None,
-    reason: str = "",
-    request_id: Optional[str] = None,
-    account_revision: int = 1
-) -> Dict[str, Any]:
+async def record_economy_ledger(db, transaction: EconomyTransaction) -> Dict[str, Any]:
     """Records an immutable audit entry in economy_ledger adhering to Section 9."""
     tx_id = str(uuid.uuid4())
     now_iso = datetime.now(timezone.utc).isoformat()
 
     entry = {
         'transaction_id': tx_id,
-        'account_id': account_id.lower(),
-        'request_id': request_id or tx_id,
-        'action': action,
-        'gold_delta': int(gold_delta),
-        'source_type': source_type,
-        'source_id': source_id or '',
-        'account_revision': account_revision,
-        'reason': reason,
+        'account_id': transaction.account_id.lower(),
+        'request_id': transaction.request_id or tx_id,
+        'action': transaction.action,
+        'gold_delta': int(transaction.gold_delta),
+        'source_type': transaction.source_type,
+        'source_id': transaction.source_id or '',
+        'account_revision': transaction.account_revision,
+        'reason': transaction.reason,
         'created_at': now_iso,
     }
 
@@ -66,30 +69,22 @@ async def record_economy_ledger(
     return entry
 
 
-async def mutate_gold_atomic(
-    db,
-    account_id: str,
-    gold_delta: int,
-    action: str,
-    source_type: str,
-    source_id: Optional[str] = None,
-    reason: str = "",
-    request_id: Optional[str] = None
-) -> Tuple[bool, int, Dict[str, Any]]:
+async def mutate_gold_atomic(db, transaction: EconomyTransaction) -> Tuple[bool, int, Dict[str, Any]]:
     """Mutates gold atomically with CAS revision increment and audit entry.
     Prevents negative balance. Returns (success, new_gold, ledger_entry).
     """
-    acc_id = account_id.lower()
+    acc_id = transaction.account_id.lower()
+    gold_delta = transaction.gold_delta
     from player_accounts import get_player_progress, save_player_progress
 
     prog = await get_player_progress(db, acc_id)
-    request_key = request_id or str(uuid.uuid4())
+    request_key = transaction.request_id or str(uuid.uuid4())
+    transaction = replace(transaction, account_id=acc_id, request_id=request_key)
     applied = prog.setdefault('applied_economy_requests', {})
     previous = applied.get(request_key)
     if previous:
-        ledger_entry = await record_economy_ledger(
-            db, acc_id, int(previous['gold_delta']), action, source_type, source_id,
-            reason, request_key, previous['account_revision'])
+        ledger_entry = await record_economy_ledger(db, replace(transaction,
+            gold_delta=int(previous['gold_delta']), account_revision=previous['account_revision']))
         return True, int(previous['gold_balance']), ledger_entry
     current_gold = int(prog.get('gold', 0))
 
@@ -102,16 +97,6 @@ async def mutate_gold_atomic(
                             'account_revision': int(prog.get('revision', 1)) + 1}
     prog = await save_player_progress(db, acc_id, prog)
 
-    ledger_entry = await record_economy_ledger(
-        db=db,
-        account_id=acc_id,
-        gold_delta=gold_delta,
-        action=action,
-        source_type=source_type,
-        source_id=source_id,
-        reason=reason,
-        request_id=request_key,
-        account_revision=prog['revision']
-    )
+    ledger_entry = await record_economy_ledger(db, replace(transaction, account_revision=prog['revision']))
 
     return True, new_gold, ledger_entry

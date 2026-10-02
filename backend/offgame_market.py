@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, List, Optional, Tuple
 
-from economy import record_economy_ledger, mutate_gold_atomic
+from economy import EconomyTransaction, record_economy_ledger
 
 log = logging.getLogger(__name__)
 
@@ -452,7 +452,9 @@ async def finalize_order_fulfillment(
             _DELIVERY_INBOX[acc_id].append(entitlement)
 
     # Mark order fulfilled
-    await record_economy_ledger(db, acc_id, int(gold_to_grant), 'market_purchase', 'market', order_id, f"Purchase: {sku_def['name']}", request_id=f'market:{order_id}', account_revision=prog.get('revision', 1))
+    await record_economy_ledger(db, EconomyTransaction(account_id=acc_id, gold_delta=int(gold_to_grant),
+        action='market_purchase', source_type='market', source_id=order_id, reason=f"Purchase: {sku_def['name']}",
+        request_id=f'market:{order_id}', account_revision=prog.get('revision', 1)))
     order['status'] = 'fulfilled'
     order['tx_hash'] = tx_hash
     order['fulfilled_at'] = datetime.now(timezone.utc).isoformat()

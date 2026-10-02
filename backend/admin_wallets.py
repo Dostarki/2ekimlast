@@ -10,7 +10,7 @@ from pymongo.errors import PyMongoError
 
 from access_payments import has_fee_exemption, has_paid_access
 from document_models import BaseDocument
-from economy import mutate_gold_atomic
+from economy import EconomyTransaction, mutate_gold_atomic
 from player_accounts import get_account_by_address, get_player_progress
 
 
@@ -111,8 +111,10 @@ def wallet_admin_router(db, early_db):
             if previous and previous['gold_delta'] != body.amount:
                 raise HTTPException(409, 'Bu işlem numarası farklı bir gold miktarı için kullanılmış.')
             try:
-                _, gold, _ = await mutate_gold_atomic(db, body.wallet, body.amount,
-                    'admin_gold_grant', 'admin', source_id='operator', reason='Admin panel gold grant', request_id=key)
+                transaction = EconomyTransaction(account_id=body.wallet, gold_delta=body.amount,
+                    action='admin_gold_grant', source_type='admin', source_id='operator',
+                    reason='Admin panel gold grant', request_id=key)
+                _, gold, _ = await mutate_gold_atomic(db, transaction)
                 return GoldResult(wallet=body.wallet, amount=body.amount, gold=gold, request_id=str(body.request_id))
             except RuntimeError as error:
                 if str(error) != 'progress_revision_conflict':

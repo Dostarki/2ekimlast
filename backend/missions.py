@@ -164,11 +164,11 @@ async def claim_soldier_mission(db, account_id: str, mission_id: str,
             else:
                 raise
     reward = int(receipt.get('reward_gold', mission.get('reward_gold', 0))) if receipt else int(mission.get('reward_gold', 0))
-    from economy import record_economy_ledger
-    await record_economy_ledger(
-        db, acc_id, reward, 'mission_claim', 'mission', mission_id,
-        f'24-hour soldier mission reward ({mission.get("soldier_name", "Soldier")})',
-        request_id=f'mission:{mission_id}', account_revision=prog.get('revision', 1))
+    from economy import EconomyTransaction, record_economy_ledger
+    await record_economy_ledger(db, EconomyTransaction(
+        account_id=acc_id, gold_delta=reward, action='mission_claim', source_type='mission', source_id=mission_id,
+        reason=f'24-hour soldier mission reward ({mission.get("soldier_name", "Soldier")})',
+        request_id=f'mission:{mission_id}', account_revision=prog.get('revision', 1)))
     claimed_at = mission.get('claimed_at') or datetime.now(timezone.utc).isoformat()
     await db.soldier_missions.update_one(
         {'mission_id': mission_id, 'account_id': acc_id, 'status': {'$in': ['active', 'rewarded', 'claimed']}},
